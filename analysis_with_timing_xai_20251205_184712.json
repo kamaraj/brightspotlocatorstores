@@ -1,0 +1,1703 @@
+{
+  "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+  "timestamp": "2025-12-05T18:47:12.641559",
+  "total_analysis_time_ms": 17671.13,
+  "total_analysis_time_seconds": 17.67,
+  "data_points_collected": 66,
+  "categories": {
+    "demographics": {
+      "data": {
+        "success": false,
+        "error": "Failed to geocode address",
+        "population_density": 0,
+        "children_0_5_count": 0,
+        "median_household_income": 0,
+        "population_growth_rate": 0.0
+      },
+      "score": 0.0,
+      "data_points": 15,
+      "collection_time_ms": 5187.39
+    },
+    "competition": {
+      "data": {
+        "success": false,
+        "existing_centers_count": 0,
+        "total_licensed_capacity": 0,
+        "market_saturation_index": 0.0,
+        "avg_competitor_rating": 0.0,
+        "premium_facilities_count": 0,
+        "avg_capacity_utilization_pct": 0.0,
+        "waitlist_prevalence_score": 0.0,
+        "market_gap_score": 0.0,
+        "demand_supply_ratio": 0.0,
+        "nearest_competitor_miles": 0.0,
+        "competitive_intensity_score": 0.0,
+        "new_centers_planned": 0,
+        "data_source": "Mock Data",
+        "centers_analyzed": 0
+      },
+      "score": 65.0,
+      "data_points": 12,
+      "collection_time_ms": 2755.31
+    },
+    "accessibility": {
+      "data": {
+        "success": false,
+        "avg_commute_minutes": 20.0,
+        "peak_congestion_factor": 1.3,
+        "nearest_employer_miles": 2.0,
+        "employers_within_5_miles": 10,
+        "transit_score": 50.0,
+        "walk_score_to_transit": 50.0,
+        "morning_rush_score": 60.0,
+        "evening_rush_score": 55.0,
+        "highway_visibility_score": 50.0,
+        "parking_availability_score": 50.0,
+        "data_source": "Mock Data"
+      },
+      "score": 53.0,
+      "data_points": 10,
+      "collection_time_ms": 3049.92
+    },
+    "safety": {
+      "data": {
+        "success": false,
+        "crime_rate_index": 30.0,
+        "violent_crime_rate": 6.0,
+        "property_crime_rate": 24.0,
+        "traffic_accident_rate": 25.0,
+        "pedestrian_safety_score": 70.0,
+        "air_quality_index": 50.0,
+        "superfund_proximity_score": 85.0,
+        "industrial_hazards_score": 20.0,
+        "flood_risk_score": 30.0,
+        "natural_hazard_composite": 40.0,
+        "neighborhood_safety_perception": 60.0,
+        "data_source": "Mock Data"
+      },
+      "score": 68.0,
+      "data_points": 11,
+      "collection_time_ms": 2097.31
+    },
+    "economic": {
+      "data": {
+        "success": false,
+        "real_estate_cost_per_sqft": 150.0,
+        "property_tax_rate_pct": 1.2,
+        "construction_cost_per_sqft": 210.0,
+        "avg_commercial_rent_per_sqft_year": 20.0,
+        "utility_cost_index": 100.0,
+        "local_wage_level_annual": 32000.0,
+        "childcare_worker_availability_score": 60.0,
+        "avg_childcare_worker_wage": 30000.0,
+        "business_incentives_score": 50.0,
+        "economic_growth_indicator": 55.0,
+        "data_source": "Mock Data"
+      },
+      "score": 57.8,
+      "data_points": 10,
+      "collection_time_ms": 2103.84
+    },
+    "regulatory": {
+      "data": {
+        "success": false,
+        "jurisdiction": "Unknown",
+        "state": "Unknown",
+        "zoning_compliance_score": 60.0,
+        "conditional_use_permit_required": false,
+        "rezoning_feasibility_score": 65.0,
+        "building_code_complexity_score": 55.0,
+        "ada_compliance_cost_estimate": 20000.0,
+        "licensing_difficulty_score": 55.0,
+        "time_to_obtain_license_days": 90.0,
+        "avg_permit_processing_days": 75.0,
+        "data_source": "Mock Data"
+      },
+      "score": 55.0,
+      "data_points": 8,
+      "collection_time_ms": 2021.4
+    }
+  },
+  "scores": {
+    "demographics": 0.0,
+    "competition": 65.0,
+    "accessibility": 53.0,
+    "safety": 68.0,
+    "economic": 57.8,
+    "regulatory": 55.0,
+    "overall": 46.9
+  },
+  "recommendation": "FAIR \u2b50\u2b50\u2b50 - Viable with improvements",
+  "xai_explanations": {
+    "demographics": {
+      "error": {
+        "data_point": "error",
+        "category": "demographics",
+        "value": "Failed to geocode address",
+        "explanation": {
+          "what": "Data point: error",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: demographics",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "error",
+          "population_density",
+          "children_0_5_count",
+          "median_household_income",
+          "population_growth_rate"
+        ]
+      },
+      "population_density": {
+        "data_point": "population_density",
+        "category": "demographics",
+        "value": 0,
+        "explanation": {
+          "what": "Number of children (0-5) per square mile",
+          "how": "children_0_5_count / land_area_sqmi",
+          "why": "Indicates market concentration - higher density means more potential customers in smaller radius",
+          "source": "Calculated from Census data",
+          "confidence": "HIGH - Based on official census data"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "error",
+          "population_density",
+          "children_0_5_count",
+          "median_household_income",
+          "population_growth_rate"
+        ]
+      },
+      "children_0_5_count": {
+        "data_point": "children_0_5_count",
+        "category": "demographics",
+        "value": 0,
+        "explanation": {
+          "what": "Total number of children aged 0-5 years in the area",
+          "how": "Calculated by summing Census variables B01001_003E (males <5) + B01001_027E (females <5)",
+          "why": "Direct measure of target market size for childcare services",
+          "source": "U.S. Census Bureau ACS 5-Year Estimates",
+          "confidence": "HIGH - Direct census data"
+        },
+        "interpretation": "POOR - Very limited market",
+        "raw_data_keys": [
+          "success",
+          "error",
+          "population_density",
+          "children_0_5_count",
+          "median_household_income",
+          "population_growth_rate"
+        ]
+      },
+      "median_household_income": {
+        "data_point": "median_household_income",
+        "category": "demographics",
+        "value": 0,
+        "explanation": {
+          "what": "Median income of households in the area",
+          "how": "Direct from Census variable B19013_001E",
+          "why": "Ability to pay for childcare services - higher income = higher affordability",
+          "source": "U.S. Census Bureau ACS 5-Year",
+          "confidence": "HIGH - Direct census data"
+        },
+        "interpretation": "POOR - Limited affordability",
+        "raw_data_keys": [
+          "success",
+          "error",
+          "population_density",
+          "children_0_5_count",
+          "median_household_income",
+          "population_growth_rate"
+        ]
+      },
+      "population_growth_rate": {
+        "data_point": "population_growth_rate",
+        "category": "demographics",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: population_growth_rate",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: demographics",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "error",
+          "population_density",
+          "children_0_5_count",
+          "median_household_income",
+          "population_growth_rate"
+        ]
+      }
+    },
+    "competition": {
+      "existing_centers_count": {
+        "data_point": "existing_centers_count",
+        "category": "competition",
+        "value": 0,
+        "explanation": {
+          "what": "Number of childcare centers within search radius",
+          "how": "Google Places API search for keywords: daycare, childcare, preschool (deduplicated by place_id)",
+          "why": "Direct measure of competitive intensity - more centers = more competition",
+          "source": "Google Places API",
+          "confidence": "HIGH - Real-time business data"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "total_licensed_capacity": {
+        "data_point": "total_licensed_capacity",
+        "category": "competition",
+        "value": 0,
+        "explanation": {
+          "what": "Data point: total_licensed_capacity",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "market_saturation_index": {
+        "data_point": "market_saturation_index",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Childcare centers per square mile",
+          "how": "existing_centers_count / (\u03c0 \u00d7 radius\u00b2)",
+          "why": "Density of competition - values >2.0 indicate saturated market",
+          "source": "Calculated from Places API data",
+          "confidence": "HIGH - Based on verified business locations"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "avg_competitor_rating": {
+        "data_point": "avg_competitor_rating",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Average Google rating of competing centers",
+          "how": "Sum of all competitor ratings / number of centers with ratings",
+          "why": "Quality benchmark - must exceed this to compete effectively",
+          "source": "Google Places API ratings",
+          "confidence": "HIGH - Based on customer reviews"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "premium_facilities_count": {
+        "data_point": "premium_facilities_count",
+        "category": "competition",
+        "value": 0,
+        "explanation": {
+          "what": "Data point: premium_facilities_count",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "avg_capacity_utilization_pct": {
+        "data_point": "avg_capacity_utilization_pct",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: avg_capacity_utilization_pct",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "waitlist_prevalence_score": {
+        "data_point": "waitlist_prevalence_score",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: waitlist_prevalence_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "market_gap_score": {
+        "data_point": "market_gap_score",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Unmet demand score (0-100, higher = more opportunity)",
+          "how": "((estimated_demand - current_supply) / estimated_demand) \u00d7 100",
+          "why": "Opportunity indicator - score >60 suggests undersupplied market",
+          "source": "Calculated from population and capacity data",
+          "confidence": "MEDIUM - Based on industry benchmarks (8% need rate)"
+        },
+        "interpretation": "POOR - Oversaturated market",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "demand_supply_ratio": {
+        "data_point": "demand_supply_ratio",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: demand_supply_ratio",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "nearest_competitor_miles": {
+        "data_point": "nearest_competitor_miles",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: nearest_competitor_miles",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "competitive_intensity_score": {
+        "data_point": "competitive_intensity_score",
+        "category": "competition",
+        "value": 0.0,
+        "explanation": {
+          "what": "Data point: competitive_intensity_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      },
+      "new_centers_planned": {
+        "data_point": "new_centers_planned",
+        "category": "competition",
+        "value": 0,
+        "explanation": {
+          "what": "Data point: new_centers_planned",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: competition",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "existing_centers_count",
+          "total_licensed_capacity",
+          "market_saturation_index",
+          "avg_competitor_rating",
+          "premium_facilities_count",
+          "avg_capacity_utilization_pct",
+          "waitlist_prevalence_score",
+          "market_gap_score",
+          "demand_supply_ratio"
+        ]
+      }
+    },
+    "accessibility": {
+      "avg_commute_minutes": {
+        "data_point": "avg_commute_minutes",
+        "category": "accessibility",
+        "value": 20.0,
+        "explanation": {
+          "what": "Average commute time from employment centers",
+          "how": "Google Distance Matrix API to major employers, averaged",
+          "why": "Drop-off convenience - <20min is ideal for working parents",
+          "source": "Google Distance Matrix API",
+          "confidence": "HIGH - Real-time traffic data"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "peak_congestion_factor": {
+        "data_point": "peak_congestion_factor",
+        "category": "accessibility",
+        "value": 1.3,
+        "explanation": {
+          "what": "Data point: peak_congestion_factor",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "nearest_employer_miles": {
+        "data_point": "nearest_employer_miles",
+        "category": "accessibility",
+        "value": 2.0,
+        "explanation": {
+          "what": "Data point: nearest_employer_miles",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "employers_within_5_miles": {
+        "data_point": "employers_within_5_miles",
+        "category": "accessibility",
+        "value": 10,
+        "explanation": {
+          "what": "Data point: employers_within_5_miles",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "transit_score": {
+        "data_point": "transit_score",
+        "category": "accessibility",
+        "value": 50.0,
+        "explanation": {
+          "what": "Public transit accessibility score (0-100)",
+          "how": "Quantity (40pts) + Proximity (50pts) + Quality (10pts) based on transit stations within 1 mile",
+          "why": "Parents rely on transit - higher score = more accessible to working parents",
+          "source": "Google Places API + Distance calculations",
+          "confidence": "HIGH - Based on verified transit locations"
+        },
+        "interpretation": "FAIR - Limited transit",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "walk_score_to_transit": {
+        "data_point": "walk_score_to_transit",
+        "category": "accessibility",
+        "value": 50.0,
+        "explanation": {
+          "what": "Data point: walk_score_to_transit",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "morning_rush_score": {
+        "data_point": "morning_rush_score",
+        "category": "accessibility",
+        "value": 60.0,
+        "explanation": {
+          "what": "Data point: morning_rush_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "evening_rush_score": {
+        "data_point": "evening_rush_score",
+        "category": "accessibility",
+        "value": 55.0,
+        "explanation": {
+          "what": "Data point: evening_rush_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "highway_visibility_score": {
+        "data_point": "highway_visibility_score",
+        "category": "accessibility",
+        "value": 50.0,
+        "explanation": {
+          "what": "Data point: highway_visibility_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      },
+      "parking_availability_score": {
+        "data_point": "parking_availability_score",
+        "category": "accessibility",
+        "value": 50.0,
+        "explanation": {
+          "what": "Data point: parking_availability_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: accessibility",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "avg_commute_minutes",
+          "peak_congestion_factor",
+          "nearest_employer_miles",
+          "employers_within_5_miles",
+          "transit_score",
+          "walk_score_to_transit",
+          "morning_rush_score",
+          "evening_rush_score",
+          "highway_visibility_score"
+        ]
+      }
+    },
+    "safety": {
+      "crime_rate_index": {
+        "data_point": "crime_rate_index",
+        "category": "safety",
+        "value": 30.0,
+        "explanation": {
+          "what": "Crime risk score (0-100, lower is better)",
+          "how": "Proxy calculation: (risk_indicators \u00d7 5) - (safe_indicators \u00d7 2), scaled to 0-100",
+          "why": "Parent safety concern - score <30 is excellent, >70 is concerning",
+          "source": "Estimated from Google Places (schools, bars, etc.)",
+          "confidence": "MEDIUM - Proxy indicators, not direct crime data"
+        },
+        "interpretation": "EXCELLENT - Very safe area",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "violent_crime_rate": {
+        "data_point": "violent_crime_rate",
+        "category": "safety",
+        "value": 6.0,
+        "explanation": {
+          "what": "Data point: violent_crime_rate",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "property_crime_rate": {
+        "data_point": "property_crime_rate",
+        "category": "safety",
+        "value": 24.0,
+        "explanation": {
+          "what": "Data point: property_crime_rate",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "traffic_accident_rate": {
+        "data_point": "traffic_accident_rate",
+        "category": "safety",
+        "value": 25.0,
+        "explanation": {
+          "what": "Data point: traffic_accident_rate",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "pedestrian_safety_score": {
+        "data_point": "pedestrian_safety_score",
+        "category": "safety",
+        "value": 70.0,
+        "explanation": {
+          "what": "Data point: pedestrian_safety_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "air_quality_index": {
+        "data_point": "air_quality_index",
+        "category": "safety",
+        "value": 50.0,
+        "explanation": {
+          "what": "Air quality score (0-500 AQI scale, lower is better)",
+          "how": "Base 60 + (pollution_sources \u00d7 3) - (parks \u00d7 5)",
+          "why": "Children's health concern - AQI <100 is acceptable",
+          "source": "Estimated from pollution sources (gas stations) and parks",
+          "confidence": "LOW - Estimation only, recommend EPA AirNow API for production"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "superfund_proximity_score": {
+        "data_point": "superfund_proximity_score",
+        "category": "safety",
+        "value": 85.0,
+        "explanation": {
+          "what": "Data point: superfund_proximity_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "industrial_hazards_score": {
+        "data_point": "industrial_hazards_score",
+        "category": "safety",
+        "value": 20.0,
+        "explanation": {
+          "what": "Data point: industrial_hazards_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "flood_risk_score": {
+        "data_point": "flood_risk_score",
+        "category": "safety",
+        "value": 30.0,
+        "explanation": {
+          "what": "Data point: flood_risk_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "natural_hazard_composite": {
+        "data_point": "natural_hazard_composite",
+        "category": "safety",
+        "value": 40.0,
+        "explanation": {
+          "what": "Data point: natural_hazard_composite",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      },
+      "neighborhood_safety_perception": {
+        "data_point": "neighborhood_safety_perception",
+        "category": "safety",
+        "value": 60.0,
+        "explanation": {
+          "what": "Data point: neighborhood_safety_perception",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: safety",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "crime_rate_index",
+          "violent_crime_rate",
+          "property_crime_rate",
+          "traffic_accident_rate",
+          "pedestrian_safety_score",
+          "air_quality_index",
+          "superfund_proximity_score",
+          "industrial_hazards_score",
+          "flood_risk_score"
+        ]
+      }
+    },
+    "economic": {
+      "real_estate_cost_per_sqft": {
+        "data_point": "real_estate_cost_per_sqft",
+        "category": "economic",
+        "value": 150.0,
+        "explanation": {
+          "what": "Commercial real estate cost ($ per square foot)",
+          "how": "Base $120 + (premium_amenities \u00d7 $20), capped at $50-400",
+          "why": "Major cost factor - affects rent/purchase decisions",
+          "source": "Estimated from neighborhood amenities",
+          "confidence": "MEDIUM - Proxy estimation, recommend Zillow/CoStar API"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "property_tax_rate_pct": {
+        "data_point": "property_tax_rate_pct",
+        "category": "economic",
+        "value": 1.2,
+        "explanation": {
+          "what": "Data point: property_tax_rate_pct",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "construction_cost_per_sqft": {
+        "data_point": "construction_cost_per_sqft",
+        "category": "economic",
+        "value": 210.0,
+        "explanation": {
+          "what": "Data point: construction_cost_per_sqft",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "avg_commercial_rent_per_sqft_year": {
+        "data_point": "avg_commercial_rent_per_sqft_year",
+        "category": "economic",
+        "value": 20.0,
+        "explanation": {
+          "what": "Data point: avg_commercial_rent_per_sqft_year",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "utility_cost_index": {
+        "data_point": "utility_cost_index",
+        "category": "economic",
+        "value": 100.0,
+        "explanation": {
+          "what": "Data point: utility_cost_index",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "local_wage_level_annual": {
+        "data_point": "local_wage_level_annual",
+        "category": "economic",
+        "value": 32000.0,
+        "explanation": {
+          "what": "Data point: local_wage_level_annual",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "childcare_worker_availability_score": {
+        "data_point": "childcare_worker_availability_score",
+        "category": "economic",
+        "value": 60.0,
+        "explanation": {
+          "what": "Labor availability score (0-100, higher = more workers)",
+          "how": "50 + (schools \u00d7 5) - (existing_centers \u00d7 3)",
+          "why": "Staffing is critical - score >60 indicates adequate labor pool",
+          "source": "Calculated from schools and competitor count",
+          "confidence": "MEDIUM - Proxy based on educational institutions"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "avg_childcare_worker_wage": {
+        "data_point": "avg_childcare_worker_wage",
+        "category": "economic",
+        "value": 30000.0,
+        "explanation": {
+          "what": "Data point: avg_childcare_worker_wage",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "business_incentives_score": {
+        "data_point": "business_incentives_score",
+        "category": "economic",
+        "value": 50.0,
+        "explanation": {
+          "what": "Data point: business_incentives_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      },
+      "economic_growth_indicator": {
+        "data_point": "economic_growth_indicator",
+        "category": "economic",
+        "value": 55.0,
+        "explanation": {
+          "what": "Data point: economic_growth_indicator",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: economic",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "real_estate_cost_per_sqft",
+          "property_tax_rate_pct",
+          "construction_cost_per_sqft",
+          "avg_commercial_rent_per_sqft_year",
+          "utility_cost_index",
+          "local_wage_level_annual",
+          "childcare_worker_availability_score",
+          "avg_childcare_worker_wage",
+          "business_incentives_score"
+        ]
+      }
+    },
+    "regulatory": {
+      "zoning_compliance_score": {
+        "data_point": "zoning_compliance_score",
+        "category": "regulatory",
+        "value": 60.0,
+        "explanation": {
+          "what": "Zoning compatibility score (0-100, higher is better)",
+          "how": "Base 50 + (existing_childcare \u00d7 10) + (compatible_uses \u00d7 3) - (industrial \u00d7 10)",
+          "why": "Regulatory feasibility - score >60 means likely compliant",
+          "source": "Inferred from land use patterns",
+          "confidence": "LOW - Estimation only, verify with city zoning office"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "conditional_use_permit_required": {
+        "data_point": "conditional_use_permit_required",
+        "category": "regulatory",
+        "value": false,
+        "explanation": {
+          "what": "Data point: conditional_use_permit_required",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "rezoning_feasibility_score": {
+        "data_point": "rezoning_feasibility_score",
+        "category": "regulatory",
+        "value": 65.0,
+        "explanation": {
+          "what": "Data point: rezoning_feasibility_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "building_code_complexity_score": {
+        "data_point": "building_code_complexity_score",
+        "category": "regulatory",
+        "value": 55.0,
+        "explanation": {
+          "what": "Data point: building_code_complexity_score",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "ada_compliance_cost_estimate": {
+        "data_point": "ada_compliance_cost_estimate",
+        "category": "regulatory",
+        "value": 20000.0,
+        "explanation": {
+          "what": "Data point: ada_compliance_cost_estimate",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "licensing_difficulty_score": {
+        "data_point": "licensing_difficulty_score",
+        "category": "regulatory",
+        "value": 55.0,
+        "explanation": {
+          "what": "Licensing complexity score (0-100, lower is easier)",
+          "how": "State-based scoring: CA=80, TX=50, etc. + urban adjustment",
+          "why": "Time-to-market indicator - score >70 means 120+ days",
+          "source": "Historical patterns by state/city",
+          "confidence": "MEDIUM - Based on known regulations by jurisdiction"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "time_to_obtain_license_days": {
+        "data_point": "time_to_obtain_license_days",
+        "category": "regulatory",
+        "value": 90.0,
+        "explanation": {
+          "what": "Data point: time_to_obtain_license_days",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      },
+      "avg_permit_processing_days": {
+        "data_point": "avg_permit_processing_days",
+        "category": "regulatory",
+        "value": 75.0,
+        "explanation": {
+          "what": "Data point: avg_permit_processing_days",
+          "how": "See data collector source code for calculation method",
+          "why": "Contributing factor to location suitability",
+          "source": "Category: regulatory",
+          "confidence": "MEDIUM"
+        },
+        "interpretation": "See explanation for details",
+        "raw_data_keys": [
+          "success",
+          "jurisdiction",
+          "state",
+          "zoning_compliance_score",
+          "conditional_use_permit_required",
+          "rezoning_feasibility_score",
+          "building_code_complexity_score",
+          "ada_compliance_cost_estimate",
+          "licensing_difficulty_score",
+          "time_to_obtain_license_days"
+        ]
+      }
+    }
+  },
+  "performance_report": {
+    "total_time_ms": 17671.13,
+    "tracked_time_ms": 17216.12,
+    "overhead_ms": 455.03,
+    "steps_count": 9,
+    "successful_steps": 9,
+    "failed_steps": 0,
+    "categories": {
+      "initialization": {
+        "steps": [
+          {
+            "name": "initialization",
+            "duration_ms": 0.05,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 0.05,
+        "count": 1
+      },
+      "demographics": {
+        "steps": [
+          {
+            "name": "demographics_geocoding",
+            "duration_ms": 0.0,
+            "success": true,
+            "error": null
+          },
+          {
+            "name": "demographics_total",
+            "duration_ms": 5187.39,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 5187.39,
+        "count": 2
+      },
+      "competition": {
+        "steps": [
+          {
+            "name": "competition_total",
+            "duration_ms": 2755.31,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 2755.31,
+        "count": 1
+      },
+      "accessibility": {
+        "steps": [
+          {
+            "name": "accessibility_total",
+            "duration_ms": 3049.92,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 3049.92,
+        "count": 1
+      },
+      "safety": {
+        "steps": [
+          {
+            "name": "safety_total",
+            "duration_ms": 2097.31,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 2097.31,
+        "count": 1
+      },
+      "economic": {
+        "steps": [
+          {
+            "name": "economic_total",
+            "duration_ms": 2103.84,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 2103.84,
+        "count": 1
+      },
+      "regulatory": {
+        "steps": [
+          {
+            "name": "regulatory_total",
+            "duration_ms": 2021.4,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 2021.4,
+        "count": 1
+      },
+      "xai": {
+        "steps": [
+          {
+            "name": "xai_generation",
+            "duration_ms": 0.9,
+            "success": true,
+            "error": null
+          }
+        ],
+        "total_ms": 0.9,
+        "count": 1
+      }
+    },
+    "detailed_steps": [
+      {
+        "step": "initialization",
+        "duration_ms": 0.05,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "demographics_geocoding",
+        "duration_ms": 0.0,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "demographics_total",
+        "duration_ms": 5187.39,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "competition_total",
+        "duration_ms": 2755.31,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "accessibility_total",
+        "duration_ms": 3049.92,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "safety_total",
+        "duration_ms": 2097.31,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "economic_total",
+        "duration_ms": 2103.84,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "regulatory_total",
+        "duration_ms": 2021.4,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      },
+      {
+        "step": "xai_generation",
+        "duration_ms": 0.9,
+        "success": true,
+        "error": null,
+        "metadata": {}
+      }
+    ],
+    "timestamp": "2025-12-05T18:47:09.634479"
+  }
+}

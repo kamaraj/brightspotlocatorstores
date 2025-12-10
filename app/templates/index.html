@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brightspot Locator AI - Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-geo-alt-fill"></i> Brightspot Locator AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api-sources">
+                            <i class="bi bi-database"></i> Data Sources
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs" target="_blank">API Docs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toggle Button for Sidebar -->
+    <button id="sidebarToggle" class="btn btn-primary sidebar-toggle" type="button">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Left Panel - Input Form -->
+            <div class="col-lg-4 sidebar-panel" id="sidebarPanel">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-search"></i> Location Analysis</h5>
+                        <button class="btn btn-sm btn-light sidebar-close" id="sidebarClose">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form id="analysisForm">
+                            <!-- Address Input -->
+                            <div class="mb-3">
+                                <label for="address" class="form-label fw-bold">
+                                    <i class="bi bi-pin-map"></i> Address
+                                </label>
+                                <input type="text" class="form-control" id="address" 
+                                       placeholder="Enter full address (e.g., 1600 Amphitheatre Parkway, Mountain View, CA)"
+                                       required>
+                                <small class="form-text text-muted">
+                                    Enter the complete street address including city and state
+                                </small>
+                            </div>
+
+                            <!-- Radius Input -->
+                            <div class="mb-3">
+                                <label for="radius" class="form-label fw-bold">
+                                    <i class="bi bi-arrows-angle-expand"></i> Search Radius
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="radius" 
+                                           value="2.0" min="0.5" max="10" step="0.5" required>
+                                    <span class="input-group-text">miles</span>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Recommended: 1-3 miles for urban, 3-5 miles for suburban
+                                </small>
+                            </div>
+
+                            <!-- Sample Addresses -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-bookmark"></i> Quick Select
+                                </label>
+                                <div class="btn-group-vertical w-100" role="group">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
+                                            data-address="1600 Amphitheatre Parkway, Mountain View, CA 94043">
+                                        <i class="bi bi-geo-alt"></i> Google HQ, Mountain View
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
+                                            data-address="1 Infinite Loop, Cupertino, CA 95014">
+                                        <i class="bi bi-geo-alt"></i> Apple Park, Cupertino
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
+                                            data-address="1 Microsoft Way, Redmond, WA 98052">
+                                        <i class="bi bi-geo-alt"></i> Microsoft, Redmond
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100 btn-lg" id="analyzeBtn">
+                                <i class="bi bi-lightning-charge-fill"></i> Analyze Location
+                            </button>
+
+                            <!-- Loading Spinner -->
+                            <div id="loadingSpinner" class="text-center mt-3 d-none">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Analyzing location data...</p>
+                                <small class="text-muted">Collecting 66 data points across 6 categories</small>
+                            </div>
+                        </form>
+
+                        <!-- API Info -->
+                        <div class="alert alert-info mt-3" role="alert">
+                            <small>
+                                <i class="bi bi-info-circle"></i> <strong>Data Sources:</strong>
+                                <ul class="mb-0 mt-1">
+                                    <li>U.S. Census Bureau (Demographics)</li>
+                                    <li>Google Maps APIs (Competition, Accessibility)</li>
+                                    <li>EPA/FBI Data (Safety)</li>
+                                    <li>BLS/CoStar (Economic)</li>
+                                </ul>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Results Dashboard -->
+            <div class="col-lg-8 main-content" id="mainContent">
+                <!-- Welcome Message (shows before analysis) -->
+                <div id="welcomeMessage" class="text-center py-5">
+                    <i class="bi bi-graph-up-arrow text-primary" style="font-size: 4rem;"></i>
+                    <h2 class="mt-3">Welcome to Brightspot Locator AI</h2>
+                    <p class="lead text-muted">
+                        Enter an address to analyze 66 data points across 6 categories
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Demographics</h5>
+                                    <p class="text-muted small">15 data points</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-buildings text-success" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Competition</h5>
+                                    <p class="text-muted small">12 data points</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-info">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-car-front-fill text-info" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Accessibility</h5>
+                                    <p class="text-muted small">10 data points</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Container (hidden initially) -->
+                <div id="resultsContainer" class="d-none">
+                    <!-- Overall Score Card -->
+                    <div class="card shadow-sm mb-4 border-0">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h4 class="mb-1" id="analyzedAddress">Location Analysis</h4>
+                                    <p class="text-muted mb-0" id="analysisTimestamp">
+                                        <i class="bi bi-clock"></i> <span></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <h1 class="display-3 mb-0" id="overallScore">--</h1>
+                                    <p class="text-muted">Overall Score</p>
+                                </div>
+                            </div>
+                            <div class="progress mt-3" style="height: 30px;">
+                                <div class="progress-bar" id="overallProgressBar" role="progressbar" 
+                                     style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    <span id="overallProgressText"></span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2" id="recommendationBadge">--</span>
+                                <span class="text-muted" id="recommendationText">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="bi bi-stopwatch"></i> Performance Metrics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3">
+                                    <h3 class="text-primary mb-0" id="totalTime">--</h3>
+                                    <small class="text-muted">Total Time (ms)</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <h3 class="text-success mb-0" id="dataPoints">66</h3>
+                                    <small class="text-muted">Data Points</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <h3 class="text-info mb-0" id="successRate">--</h3>
+                                    <small class="text-muted">Success Rate</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <h3 class="text-warning mb-0" id="categories">6</h3>
+                                    <small class="text-muted">Categories</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Scores -->
+                    <div class="row mb-4" id="categoryScores">
+                        <!-- Will be populated dynamically -->
+                    </div>
+
+                    <!-- Detailed Results Tabs -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <ul class="nav nav-tabs card-header-tabs" id="resultsTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="demographics-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#demographics" type="button">
+                                        <i class="bi bi-people"></i> Demographics
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="competition-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#competition" type="button">
+                                        <i class="bi bi-buildings"></i> Competition
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="accessibility-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#accessibility" type="button">
+                                        <i class="bi bi-car-front"></i> Accessibility
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="safety-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#safety" type="button">
+                                        <i class="bi bi-shield-check"></i> Safety
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="economic-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#economic" type="button">
+                                        <i class="bi bi-currency-dollar"></i> Economic
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="regulatory-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#regulatory" type="button">
+                                        <i class="bi bi-file-text"></i> Regulatory
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="resultsTabContent">
+                                <div class="tab-pane fade show active" id="demographics" role="tabpanel">
+                                    <!-- Demographics content -->
+                                </div>
+                                <div class="tab-pane fade" id="competition" role="tabpanel">
+                                    <!-- Competition content -->
+                                </div>
+                                <div class="tab-pane fade" id="accessibility" role="tabpanel">
+                                    <!-- Accessibility content -->
+                                </div>
+                                <div class="tab-pane fade" id="safety" role="tabpanel">
+                                    <!-- Safety content -->
+                                </div>
+                                <div class="tab-pane fade" id="economic" role="tabpanel">
+                                    <!-- Economic content -->
+                                </div>
+                                <div class="tab-pane fade" id="regulatory" role="tabpanel">
+                                    <!-- Regulatory content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timing Chart -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="bi bi-graph-up"></i> Timing Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="timingChart" height="80"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Export Options -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5><i class="bi bi-download"></i> Export Results</h5>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary" id="exportJSON">
+                                    <i class="bi bi-filetype-json"></i> Export JSON
+                                </button>
+                                <button type="button" class="btn btn-outline-success" id="exportCSV">
+                                    <i class="bi bi-filetype-csv"></i> Export CSV
+                                </button>
+                                <button type="button" class="btn btn-outline-info" id="printReport">
+                                    <i class="bi bi-printer"></i> Print Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Alert -->
+                <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+                    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Error</h5>
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-3 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">
+                Brightspot Locator AI &copy; 2025 | 
+                <a href="/docs" target="_blank">API Documentation</a> | 
+                <a href="/redoc" target="_blank">API Reference</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS with cache bust -->
+    <script src="/static/js/dashboard.js?v=20251210-2"></script>
+</body>
+</html>

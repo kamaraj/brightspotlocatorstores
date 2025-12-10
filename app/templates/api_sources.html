@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Sources - Brightspot Locator AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .layer-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .layer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .layer-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-ready {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .header-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .api-endpoint {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        h1 {
+            color: #667eea;
+            font-weight: 700;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-card">
+            <h1 class="mb-3"><i class="bi bi-database-fill-gear"></i> API Data Sources</h1>
+            <p class="lead text-muted">Six Core Insight Layers Powered by Authoritative APIs</p>
+            <a href="/" class="btn btn-back mt-3">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Layer Cards -->
+        <div class="row">
+            <!-- Crime Risk -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-danger">
+                            <i class="bi bi-shield-exclamation"></i>
+                        </div>
+                        <h3>Crime Risk</h3>
+                        <span class="status-badge status-ready">🔄 Ready to Implement</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> FBI Crime Data Explorer (CDE)</p>
+                    <p><strong>Key Data Point:</strong> Violent crime rates per county</p>
+                    <div class="api-endpoint">
+                        https://api.usa.gov/crime/fbi/cde/
+                    </div>
+                    <ul class="mt-3">
+                        <li>Violent & property crime rates</li>
+                        <li>Year-over-year trends</li>
+                        <li>County-level statistics</li>
+                        <li><strong>Cost:</strong> FREE (Government API)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Environment Risk -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-success">
+                            <i class="bi bi-globe-americas"></i>
+                        </div>
+                        <h3>Environment Risk</h3>
+                        <span class="status-badge status-ready">🔄 Ready to Implement</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> EPA Envirofacts + FEMA</p>
+                    <p><strong>Key Data Point:</strong> Toxic sites & Flood history</p>
+                    <div class="api-endpoint">
+                        https://data.epa.gov/efservice/
+                    </div>
+                    <ul class="mt-3">
+                        <li>Toxic Release Inventory sites</li>
+                        <li>Air Quality Index (AQI)</li>
+                        <li>Flood zone designations</li>
+                        <li><strong>Cost:</strong> FREE (Public APIs)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Demographics -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-primary">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h3>Demographics</h3>
+                        <span class="status-badge status-active">✅ Active</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> U.S. Census Bureau (ACS)</p>
+                    <p><strong>Key Data Point:</strong> Median Income & Population Growth</p>
+                    <div class="api-endpoint">
+                        https://api.census.gov/data/2021/acs/acs5
+                    </div>
+                    <ul class="mt-3">
+                        <li>15 demographic metrics collected</li>
+                        <li>Children population (0-5, 5-9)</li>
+                        <li>Household income & employment</li>
+                        <li><strong>Cost:</strong> FREE (Government API)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Rental Base -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-warning">
+                            <i class="bi bi-house-fill"></i>
+                        </div>
+                        <h3>Rental Base</h3>
+                        <span class="status-badge status-ready">🔄 Ready to Implement</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> HUD User API</p>
+                    <p><strong>Key Data Point:</strong> Fair Market Rent (FMR) prices</p>
+                    <div class="api-endpoint">
+                        https://www.huduser.gov/hudapi/public/
+                    </div>
+                    <ul class="mt-3">
+                        <li>FMR by bedroom count</li>
+                        <li>Income limits & affordability</li>
+                        <li>Small Area FMR (SAFMR)</li>
+                        <li><strong>Cost:</strong> FREE (1,200 req/day)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Neighborhood Vibe -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-info">
+                            <i class="bi bi-shop"></i>
+                        </div>
+                        <h3>Neighborhood Vibe</h3>
+                        <span class="status-badge status-ready">🔄 Ready to Implement</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> Yelp Fusion API</p>
+                    <p><strong>Key Data Point:</strong> Restaurant density & ratings</p>
+                    <div class="api-endpoint">
+                        https://api.yelp.com/v3/businesses/search
+                    </div>
+                    <ul class="mt-3">
+                        <li>Restaurant density per sq mile</li>
+                        <li>Average ratings & reviews</li>
+                        <li>Cuisine diversity index</li>
+                        <li><strong>Cost:</strong> FREE (5,000 req/day)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Walkability -->
+            <div class="col-md-6">
+                <div class="layer-card">
+                    <div class="text-center">
+                        <div class="layer-icon text-secondary">
+                            <i class="bi bi-person-walking"></i>
+                        </div>
+                        <h3>Walkability</h3>
+                        <span class="status-badge status-ready">🔄 Ready to Implement</span>
+                    </div>
+                    <hr>
+                    <p><strong>API Source:</strong> EPA SmartLocationDB</p>
+                    <p><strong>Key Data Point:</strong> National Walkability Index</p>
+                    <div class="api-endpoint">
+                        EPA SLD Dataset (Static/Download)
+                    </div>
+                    <ul class="mt-3">
+                        <li>Walkability Index (0-20 scale)</li>
+                        <li>Transit frequency & density</li>
+                        <li>Optional: Walk Score API</li>
+                        <li><strong>Cost:</strong> FREE (Public dataset)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Card -->
+        <div class="header-card mt-4">
+            <h3 class="mb-3">📋 Integration Summary</h3>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <h2 class="text-primary">6</h2>
+                    <p class="text-muted">Insight Layers</p>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="text-success">1</h2>
+                    <p class="text-muted">Active (Census)</p>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="text-warning">5</h2>
+                    <p class="text-muted">Ready to Implement</p>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="text-info">100%</h2>
+                    <p class="text-muted">FREE APIs</p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-muted mb-0">
+                <i class="bi bi-file-earmark-text"></i> 
+                Complete documentation: <a href="/static/docs/API_DATA_SOURCES.md" target="_blank">API_DATA_SOURCES.md</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

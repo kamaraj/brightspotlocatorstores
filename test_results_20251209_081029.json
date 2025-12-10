@@ -1,0 +1,52 @@
+[
+  {
+    "location": {
+      "name": "Affluent Suburban (North Lauderdale, FL)",
+      "address": "North Lauderdale, FL 33068",
+      "expected": "Good demographics, moderate competition"
+    },
+    "result": {
+      "error": ""
+    }
+  },
+  {
+    "location": {
+      "name": "Tech Hub (Mountain View, CA - Google HQ)",
+      "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+      "expected": "High income, high competition, high costs"
+    },
+    "result": {
+      "error": ""
+    }
+  },
+  {
+    "location": {
+      "name": "Urban Dense (New York, NY - Manhattan)",
+      "address": "Times Square, New York, NY 10036",
+      "expected": "High density, very high competition, premium pricing"
+    },
+    "result": {
+      "error": ""
+    }
+  },
+  {
+    "location": {
+      "name": "Growing Suburban (Austin, TX)",
+      "address": "Austin, TX 78701",
+      "expected": "Growing market, moderate competition"
+    },
+    "result": {
+      "error": ""
+    }
+  },
+  {
+    "location": {
+      "name": "Rural Area (Small Town)",
+      "address": "Lexington, VA 24450",
+      "expected": "Low competition, smaller market"
+    },
+    "result": {
+      "error": ""
+    }
+  }
+]

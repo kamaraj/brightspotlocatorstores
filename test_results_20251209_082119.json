@@ -1,0 +1,654 @@
+{
+  "test_date": "2025-12-09T08:21:19.664142",
+  "data_sources": {
+    "demographics": {
+      "api": "U.S. Census Bureau ACS 5-Year",
+      "endpoint": "https://api.census.gov/data/2021/acs/acs5",
+      "data_points": [
+        "Children 0-5 count",
+        "Children 5-9 count",
+        "Median household income",
+        "Unemployment rate",
+        "Population density",
+        "Birth rate estimate",
+        "Employment to population ratio",
+        "Family households",
+        "Education attainment",
+        "Poverty rate",
+        "Housing occupancy",
+        "Labor force participation",
+        "Commute patterns",
+        "Language spoken",
+        "Internet access"
+      ],
+      "count": 15,
+      "status": "\u2705 Active",
+      "confidence": "HIGH"
+    },
+    "competition": {
+      "api": "Google Places API",
+      "endpoint": "https://maps.googleapis.com/maps/api/place",
+      "data_points": [
+        "Existing centers count",
+        "Market saturation index",
+        "Average competitor rating",
+        "Average competitor reviews",
+        "Top competitor name",
+        "Top competitor rating",
+        "Market gap score",
+        "Estimated market demand",
+        "Estimated current supply",
+        "Centers within 1 mile",
+        "Centers within 2 miles",
+        "Competitive intensity"
+      ],
+      "count": 12,
+      "status": "\u2705 Active",
+      "confidence": "HIGH"
+    },
+    "accessibility": {
+      "api": "Google Distance Matrix + Places",
+      "endpoint": "https://maps.googleapis.com/maps/api/distancematrix",
+      "data_points": [
+        "Transit score",
+        "Transit stations count",
+        "Closest transit distance",
+        "Average commute minutes",
+        "Parking availability score",
+        "Major highways nearby",
+        "Highway distance miles",
+        "Public transit modes",
+        "Peak traffic multiplier",
+        "Accessibility score"
+      ],
+      "count": 10,
+      "status": "\u2705 Active",
+      "confidence": "HIGH"
+    },
+    "safety": {
+      "api": "Proxy Indicators (awaiting FBI CDE + EPA)",
+      "endpoint": "Google Places (temporary)",
+      "data_points": [
+        "Crime rate index (estimated)",
+        "Police stations nearby",
+        "Fire stations nearby",
+        "Hospitals nearby",
+        "Emergency response time",
+        "Air quality index (estimated)",
+        "Environmental hazards",
+        "Flood risk indicator",
+        "Safety facilities score",
+        "Neighborhood safety score",
+        "Healthcare access"
+      ],
+      "count": 11,
+      "status": "\u26a0\ufe0f Estimated",
+      "confidence": "MEDIUM"
+    },
+    "economic": {
+      "api": "Market Estimates (awaiting HUD User)",
+      "endpoint": "Calculated from demographics + competition",
+      "data_points": [
+        "Real estate cost per sqft (estimated)",
+        "Startup cost estimate",
+        "Operating cost estimate",
+        "Revenue potential",
+        "Break-even timeline",
+        "Childcare worker availability score",
+        "Labor cost estimate",
+        "Market growth potential",
+        "Economic viability score",
+        "Profit margin estimate"
+      ],
+      "count": 10,
+      "status": "\u26a0\ufe0f Estimated",
+      "confidence": "MEDIUM"
+    },
+    "regulatory": {
+      "api": "State Licensing Databases",
+      "endpoint": "State-specific regulations",
+      "data_points": [
+        "State requirements",
+        "Licensing complexity score",
+        "Staff ratio requirements",
+        "Background check requirements",
+        "Health and safety standards",
+        "Facility requirements",
+        "Zoning compliance",
+        "Operating hours restrictions"
+      ],
+      "count": 8,
+      "status": "\u2705 Active",
+      "confidence": "HIGH"
+    }
+  },
+  "results": [
+    {
+      "error": true,
+      "timeout": true,
+      "location_metadata": {
+        "name": "Silicon Valley Tech Hub",
+        "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+        "city": "Mountain View",
+        "state": "California"
+      }
+    },
+    {
+      "error": true,
+      "timeout": true,
+      "location_metadata": {
+        "name": "Manhattan Urban Center",
+        "address": "350 5th Avenue, New York, NY 10118",
+        "city": "New York",
+        "state": "New York"
+      }
+    },
+    {
+      "address": "500 W 2nd St, Austin, TX 78701, USA",
+      "original_address": "500 W 2nd St, Austin, TX 78701",
+      "address_validation": {
+        "corrected": true,
+        "components": {
+          "street_number": "500",
+          "route": "West 2nd Street",
+          "street_address": "500 West 2nd Street",
+          "city": "Austin",
+          "state": "TX",
+          "zip_code": "78701",
+          "county": "Travis County"
+        },
+        "location": {
+          "lat": 30.2659614,
+          "lng": -97.7492137
+        },
+        "place_id": "ChIJw0opDw-1RIYRQkKTjdGmp84"
+      },
+      "timestamp": "2025-12-09T08:21:19.659182",
+      "overall_score": 63.0,
+      "recommendation": "GOOD \u2b50\u2b50\u2b50\u2b50 - Suitable location with good potential",
+      "data_points_collected": 66,
+      "analysis_time_ms": 108409.98,
+      "categories": {
+        "demographics": {
+          "score": 52.5,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "radius_miles": 2.0,
+            "children_0_5_count": 1500,
+            "population_density": 250.0,
+            "birth_rate": 12.5,
+            "age_distribution_pct": 6.8,
+            "median_household_income": 75000,
+            "income_distribution_pct": 22.0,
+            "avg_childcare_spending_monthly": 625.0,
+            "income_growth_rate": 2.0,
+            "dual_income_rate": 65.0,
+            "working_mothers_rate": 58.0,
+            "avg_commute_time_minutes": 25.5,
+            "population_growth_rate": 1.2,
+            "net_migration_rate": 0.8,
+            "family_household_rate": 35.0,
+            "educational_attainment_pct": 42.0,
+            "total_population": 25000,
+            "land_area_sqmi": 6.0,
+            "data_source": "Mock data (API unavailable) - 15 Data Points"
+          }
+        },
+        "competition": {
+          "score": 36.2,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "radius_miles": 2.0,
+            "existing_centers_count": 15,
+            "total_licensed_capacity": 400,
+            "market_saturation_index": 1.19,
+            "avg_competitor_rating": 4.53,
+            "premium_facilities_count": 10,
+            "avg_capacity_utilization_pct": 87.07,
+            "waitlist_prevalence_score": 93.33,
+            "market_gap_score": 0,
+            "demand_supply_ratio": 1.0,
+            "nearest_competitor_miles": 0.6,
+            "competitive_intensity_score": 68.16,
+            "new_centers_planned": 0,
+            "data_source": "Google Places API - 12 Data Points",
+            "centers_analyzed": 15
+          }
+        },
+        "accessibility": {
+          "score": 84.3,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "avg_commute_minutes": 14.5,
+            "peak_congestion_factor": 1.24,
+            "nearest_employer_miles": 1.98,
+            "employers_within_5_miles": 2,
+            "transit_score": 94.2,
+            "walk_score_to_transit": 94.2,
+            "morning_rush_score": 100,
+            "evening_rush_score": 91.6,
+            "highway_visibility_score": 30.0,
+            "parking_availability_score": 100,
+            "data_source": "Google Maps Platform - 10 Data Points"
+          }
+        },
+        "environmental": {
+          "score": 50.0,
+          "data": {
+            "tri_sites_count": 0,
+            "superfund_sites_count": 0,
+            "air_facilities_count": 0,
+            "air_quality_index": 50,
+            "environmental_hazards_score": 0,
+            "pollution_risk": "Very Low - Minimal environmental concerns",
+            "data_source": "EPA Envirofacts",
+            "confidence": "MEDIUM",
+            "last_updated": "2025-12-09T08:20:13.469431"
+          }
+        },
+        "crime": {
+          "score": 50.0,
+          "data": {
+            "violent_crime_rate": 400.0,
+            "property_crime_rate": 2500.0,
+            "murder_rate": 5.0,
+            "rape_rate": 40.0,
+            "robbery_rate": 100.0,
+            "assault_rate": 250.0,
+            "burglary_rate": 400.0,
+            "larceny_rate": 1500.0,
+            "vehicle_theft_rate": 250.0,
+            "crime_rate_index": 50.0,
+            "neighborhood_safety_score": 50.0,
+            "risk_level": "Moderate",
+            "data_year": 2023,
+            "state": "unknown",
+            "county": "unknown",
+            "data_source": "National averages (fallback)",
+            "confidence": "LOW",
+            "last_updated": "2025-12-09T08:20:15.859535"
+          }
+        },
+        "flood": {
+          "score": 50.0,
+          "data": {
+            "flood_zone": "X",
+            "flood_zone_subtype": "",
+            "base_flood_elevation": 0,
+            "flood_risk_score": 25.0,
+            "flood_risk_level": "Low-Moderate",
+            "flood_risk_indicator": 25.0,
+            "insurance_required": false,
+            "special_flood_hazard_area": false,
+            "latitude": 0,
+            "longitude": 0,
+            "data_source": "Fallback estimate",
+            "confidence": "LOW",
+            "last_updated": "2025-12-09T08:20:16.884217"
+          }
+        },
+        "safety": {
+          "score": 76.5,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "crime_rate_index": 50.0,
+            "violent_crime_rate": 400.0,
+            "property_crime_rate": 2500.0,
+            "traffic_accident_rate": 20,
+            "pedestrian_safety_score": 100,
+            "air_quality_index": 50,
+            "superfund_proximity_score": 0,
+            "industrial_hazards_score": 100,
+            "flood_risk_score": 30,
+            "natural_hazard_composite": 50.0,
+            "neighborhood_safety_perception": 88.4,
+            "data_source": "Google Places API + Estimations - 11 Data Points",
+            "environmental_hazards_score": 0,
+            "pollution_risk": "Very Low - Minimal environmental concerns",
+            "tri_sites_count": 0,
+            "superfund_sites_count": 0,
+            "neighborhood_safety_score": 50.0,
+            "flood_risk_indicator": 25.0,
+            "flood_zone": "X",
+            "flood_risk_level": "Low-Moderate",
+            "insurance_required": false
+          }
+        },
+        "housing": {
+          "score": 50.0,
+          "data": {
+            "fmr_studio": 0,
+            "fmr_1br": 0,
+            "fmr_2br": 0,
+            "fmr_3br": 0,
+            "fmr_4br": 0,
+            "average_fmr": 0,
+            "real_estate_cost_per_sqft": 150.0,
+            "estimated_monthly_rent": 62500,
+            "estimated_startup_cost": 175000,
+            "estimated_monthly_operating_cost": 72500,
+            "zip_code": "unknown",
+            "year": 2025,
+            "data_source": "Fallback estimates",
+            "confidence": "LOW",
+            "last_updated": "2025-12-09T08:20:48.963071"
+          }
+        },
+        "economic": {
+          "score": 85.8,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "real_estate_cost_per_sqft": 150.0,
+            "property_tax_rate_pct": 1.8,
+            "construction_cost_per_sqft": 560.0,
+            "avg_commercial_rent_per_sqft_year": 45,
+            "utility_cost_index": 106.3,
+            "local_wage_level_annual": 32381.0,
+            "childcare_worker_availability_score": 90,
+            "avg_childcare_worker_wage": 38520,
+            "business_incentives_score": 100,
+            "economic_growth_indicator": 100,
+            "data_source": "Google Places API + Estimations - 10 Data Points",
+            "estimated_monthly_rent": 62500,
+            "startup_cost_estimate": 175000,
+            "average_market_rent": 0
+          }
+        },
+        "regulatory": {
+          "score": 61.0,
+          "data": {
+            "success": true,
+            "address": "500 W 2nd St, Austin, TX 78701, USA",
+            "coordinates": {
+              "lat": 30.2659614,
+              "lng": -97.7492137
+            },
+            "jurisdiction": "Austin",
+            "state": "Texas",
+            "zoning_compliance_score": 60,
+            "conditional_use_permit_required": false,
+            "rezoning_feasibility_score": 90,
+            "building_code_complexity_score": 55,
+            "ada_compliance_cost_estimate": 18000,
+            "licensing_difficulty_score": 50,
+            "time_to_obtain_license_days": 90,
+            "avg_permit_processing_days": 95,
+            "data_source": "Google Geocoding API + Estimations - 8 Data Points",
+            "note": "Estimates based on general patterns. Verify with local authorities."
+          }
+        }
+      },
+      "timing": {
+        "demographics_ms": 4316.99,
+        "competition_ms": 23909.02,
+        "accessibility_ms": 12025.38,
+        "environmental_ms": 1968.73,
+        "crime_ms": 2390.06,
+        "flood_ms": 1024.68,
+        "safety_ms": 30550.34,
+        "housing_ms": 1528.47,
+        "economic_ms": 21156.77,
+        "regulatory_ms": 9539.11
+      },
+      "key_insights": [
+        "Strong demographic profile with 1,500 children aged 0-5",
+        "Excellent safety metrics (76/100)",
+        "Low flood risk - FEMA Zone X",
+        "High competition - saturated market"
+      ],
+      "performance_report": {
+        "total_time_ms": 108409.98,
+        "tracked_time_ms": 108409.58,
+        "overhead_ms": 0.4,
+        "steps_count": 11,
+        "successful_steps": 11,
+        "failed_steps": 0,
+        "categories": {
+          "initialization": {
+            "steps": [
+              {
+                "name": "initialization",
+                "duration_ms": 0.03,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 0.03,
+            "count": 1
+          },
+          "demographics": {
+            "steps": [
+              {
+                "name": "demographics",
+                "duration_ms": 4316.99,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 4316.99,
+            "count": 1
+          },
+          "competition": {
+            "steps": [
+              {
+                "name": "competition",
+                "duration_ms": 23909.02,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 23909.02,
+            "count": 1
+          },
+          "accessibility": {
+            "steps": [
+              {
+                "name": "accessibility",
+                "duration_ms": 12025.38,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 12025.38,
+            "count": 1
+          },
+          "environmental": {
+            "steps": [
+              {
+                "name": "environmental",
+                "duration_ms": 1968.73,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 1968.73,
+            "count": 1
+          },
+          "crime": {
+            "steps": [
+              {
+                "name": "crime",
+                "duration_ms": 2390.06,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 2390.06,
+            "count": 1
+          },
+          "flood": {
+            "steps": [
+              {
+                "name": "flood",
+                "duration_ms": 1024.68,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 1024.68,
+            "count": 1
+          },
+          "safety": {
+            "steps": [
+              {
+                "name": "safety",
+                "duration_ms": 30550.34,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 30550.34,
+            "count": 1
+          },
+          "housing": {
+            "steps": [
+              {
+                "name": "housing",
+                "duration_ms": 1528.47,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 1528.47,
+            "count": 1
+          },
+          "economic": {
+            "steps": [
+              {
+                "name": "economic",
+                "duration_ms": 21156.77,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 21156.77,
+            "count": 1
+          },
+          "regulatory": {
+            "steps": [
+              {
+                "name": "regulatory",
+                "duration_ms": 9539.11,
+                "success": true,
+                "error": null
+              }
+            ],
+            "total_ms": 9539.11,
+            "count": 1
+          }
+        },
+        "detailed_steps": [
+          {
+            "step": "initialization",
+            "duration_ms": 0.03,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "demographics",
+            "duration_ms": 4316.99,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "competition",
+            "duration_ms": 23909.02,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "accessibility",
+            "duration_ms": 12025.38,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "environmental",
+            "duration_ms": 1968.73,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "crime",
+            "duration_ms": 2390.06,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "flood",
+            "duration_ms": 1024.68,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "safety",
+            "duration_ms": 30550.34,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "housing",
+            "duration_ms": 1528.47,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "economic",
+            "duration_ms": 21156.77,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          },
+          {
+            "step": "regulatory",
+            "duration_ms": 9539.11,
+            "success": true,
+            "error": null,
+            "metadata": {}
+          }
+        ],
+        "timestamp": "2025-12-09T08:21:19.659158"
+      },
+      "location_metadata": {
+        "name": "Austin Tech District",
+        "address": "500 W 2nd St, Austin, TX 78701",
+        "city": "Austin",
+        "state": "Texas"
+      }
+    }
+  ]
+}
