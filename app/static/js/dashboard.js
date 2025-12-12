@@ -371,15 +371,24 @@ function updateDetailedTabs(categories) {
         const metricsCount = category.metrics_count || 0;
         console.log(`${key} - metricsCount from backend:`, metricsCount);
         
+        // Get data source details for transparency
+        const dataSourceDetails = category.data_source_details || {};
+        const overallType = dataSourceDetails.overall_type || 'unknown';
+        const accuracy = dataSourceDetails.accuracy || 'unknown';
+        const metricsSourceInfo = dataSourceDetails.metrics || {};
+        
         // Get data point keys (excluding metadata and _explanation keys)
         const excludeKeys = ['success', 'address', 'coordinates', 'data_source', 'note', 
                             'jurisdiction', 'state', 'centers_details', 'radius_miles',
                             'search_radius_miles', 'centers_analyzed', 'total_population', 
                             'land_area_sqmi', 'score', 'collection_time_ms', 'metrics_count', 
-                            'explanation', 'error', 'metrics'];
+                            'explanation', 'error', 'metrics', 'data_source_details'];
         const dataPoints = Object.keys(category).filter(k => 
             !excludeKeys.includes(k) && !k.endsWith('_explanation'));
         console.log(`${key} - dataPoints filtered:`, dataPoints);
+        
+        // Generate data source badge HTML
+        const dataSourceBadge = getDataSourceBadge(overallType, accuracy);
         
         let html = `
             <!-- Category Header -->
@@ -389,7 +398,8 @@ function updateDetailedTabs(categories) {
                         <h4 class="mb-2"><i class="bi ${getCategoryIcon(key)}"></i> ${categoryName} Analysis</h4>
                         <p class="mb-1"><strong>Category Score:</strong> <span class="badge bg-primary">${score.toFixed(1)}/100</span></p>
                         <p class="mb-1"><strong>Data Points Collected:</strong> ${metricsCount} metrics</p>
-                        <p class="mb-0"><strong>Collection Time:</strong> ${collectionTime.toFixed(2)}ms</p>
+                        <p class="mb-1"><strong>Collection Time:</strong> ${collectionTime.toFixed(2)}ms</p>
+                        <p class="mb-0"><strong>Data Quality:</strong> ${dataSourceBadge}</p>
                     </div>
                     <div class="col-md-4 text-end">
                         <div class="circular-progress" style="width: 120px; height: 120px; margin: 0 auto;">
@@ -410,9 +420,14 @@ function updateDetailedTabs(categories) {
             <!-- XAI Toggle Button -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">📊 Detailed Metrics</h5>
-                <button class="btn btn-sm btn-outline-primary" onclick="toggleXAIView('${key}')">
-                    <i class="bi bi-lightbulb"></i> <span id="xai-toggle-${key}">Show</span> AI Explanations
-                </button>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="toggleDataSourceView('${key}')">
+                        <i class="bi bi-database"></i> <span id="ds-toggle-${key}">Show</span> Data Sources
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleXAIView('${key}')">
+                        <i class="bi bi-lightbulb"></i> <span id="xai-toggle-${key}">Show</span> AI Explanations
+                    </button>
+                </div>
             </div>
             
             <!-- Data Points with XAI -->
@@ -424,6 +439,13 @@ function updateDetailedTabs(categories) {
             const value = category[dataKey];
             const displayName = dataKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             const displayValue = formatValue(value);
+            
+            // Get metric-level data source info
+            const metricSource = metricsSourceInfo[dataKey] || {};
+            const metricType = metricSource.type || 'unknown';
+            const metricSourceName = metricSource.source || 'Unknown';
+            const metricNote = metricSource.note || '';
+            const metricBadge = getMetricSourceBadge(metricType);
             
             // Get XAI explanation from backend response or use frontend fallback
             const backendXai = category[`${dataKey}_explanation`];
@@ -444,9 +466,22 @@ function updateDetailedTabs(categories) {
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h6 class="card-title mb-0">${displayName}</h6>
-                                <span class="badge ${getValueBadgeClass(xai.interpretation)}">${xai.interpretation}</span>
+                                <div>
+                                    <span class="badge ${getValueBadgeClass(xai.interpretation)}">${xai.interpretation}</span>
+                                </div>
                             </div>
                             <h3 class="text-primary mb-3">${displayValue}</h3>
+                            
+                            <!-- Data Source Badge (hidden by default) -->
+                            <div class="ds-content ds-content-${key}" style="display: none;">
+                                <div class="alert alert-light py-2 px-3 mb-0">
+                                    <div class="d-flex align-items-center">
+                                        ${metricBadge}
+                                        <small class="ms-2">${metricSourceName}</small>
+                                    </div>
+                                    ${metricNote ? `<small class="text-muted d-block mt-1">ℹ️ ${metricNote}</small>` : ''}
+                                </div>
+                            </div>
                             
                             <!-- XAI Section (hidden by default) -->
                             <div class="xai-content xai-content-${key}" style="display: none;">
@@ -517,6 +552,58 @@ function toggleXAIView(category) {
             toggleText.textContent = 'Show';
         }
     });
+}
+
+// Toggle Data Source view for a category
+function toggleDataSourceView(category) {
+    const dsElements = document.querySelectorAll(`.ds-content-${category}`);
+    const toggleText = document.getElementById(`ds-toggle-${category}`);
+    
+    dsElements.forEach(el => {
+        if (el.style.display === 'none') {
+            el.style.display = 'block';
+            toggleText.textContent = 'Hide';
+        } else {
+            el.style.display = 'none';
+            toggleText.textContent = 'Show';
+        }
+    });
+}
+
+// Get data source badge for category header
+function getDataSourceBadge(type, accuracy) {
+    const typeInfo = {
+        'real_api': { icon: '✅', label: 'Real API Data', class: 'bg-success' },
+        'mixed': { icon: '⚠️', label: 'Mixed (Real + Estimated)', class: 'bg-warning text-dark' },
+        'estimated': { icon: '📊', label: 'Estimated/Proxy', class: 'bg-secondary' },
+        'proxy': { icon: '🔄', label: 'Proxy Data', class: 'bg-info' },
+        'unknown': { icon: '❓', label: 'Unknown', class: 'bg-dark' }
+    };
+    
+    const accuracyInfo = {
+        'high': { label: 'High Accuracy', class: 'bg-success' },
+        'moderate': { label: 'Moderate Accuracy', class: 'bg-warning text-dark' },
+        'low': { label: 'Low Accuracy', class: 'bg-danger' },
+        'unknown': { label: '', class: '' }
+    };
+    
+    const t = typeInfo[type] || typeInfo['unknown'];
+    const a = accuracyInfo[accuracy] || accuracyInfo['unknown'];
+    
+    return `<span class="badge ${t.class} me-1">${t.icon} ${t.label}</span>` +
+           (a.label ? `<span class="badge ${a.class}">${a.label}</span>` : '');
+}
+
+// Get metric-level source badge
+function getMetricSourceBadge(type) {
+    const badges = {
+        'real_api': '<span class="badge bg-success">✅ Real API</span>',
+        'derived': '<span class="badge bg-info">📐 Derived</span>',
+        'estimated': '<span class="badge bg-warning text-dark">📊 Estimated</span>',
+        'proxy': '<span class="badge bg-secondary">🔄 Proxy</span>',
+        'unknown': '<span class="badge bg-dark">❓ Unknown</span>'
+    };
+    return badges[type] || badges['unknown'];
 }
 
 // Get category icon

@@ -85,7 +85,28 @@ class AccessibilityCollectorEnhanced:
                 **transit_metrics,
                 **traffic_metrics,
                 **site_metrics,
-                "data_source": "Google Maps Platform - 10 Data Points"
+                "data_source": "Google Maps Platform - 10 Data Points",
+                
+                # Data source transparency for business users
+                "data_source_details": {
+                    "overall_type": "real_api",
+                    "api_name": "Google Maps Platform",
+                    "accuracy": "high",
+                    "verifiable": True,
+                    "verification_url": "https://www.google.com/maps",
+                    "metrics": {
+                        "avg_commute_minutes": {"type": "real_api", "source": "Google Distance Matrix API"},
+                        "peak_congestion_factor": {"type": "real_api", "source": "Google Distance Matrix with departure_time"},
+                        "nearest_employer_miles": {"type": "real_api", "source": "Google Places Nearby Search"},
+                        "employers_within_5mi": {"type": "real_api", "source": "Google Places Nearby Search"},
+                        "transit_score": {"type": "derived", "source": "Transit station count from Google Places"},
+                        "walk_to_transit_minutes": {"type": "real_api", "source": "Google Distance Matrix (walking mode)"},
+                        "morning_rush_score": {"type": "real_api", "source": "Google Distance Matrix (8 AM departure)"},
+                        "evening_rush_score": {"type": "real_api", "source": "Google Distance Matrix (5 PM departure)"},
+                        "highway_access_score": {"type": "derived", "source": "Google Directions road types"},
+                        "parking_availability_score": {"type": "proxy", "source": "Google Places parking search"}
+                    }
+                }
             }
             
         except Exception as e:

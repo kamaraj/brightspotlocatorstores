@@ -377,7 +377,7 @@ async def collect_data_parallel(
         "radius_miles", "collection_time_ms", "metrics_count", "explanation",
         "error", "metrics", "search_radius_miles", "centers_analyzed",
         "total_population", "land_area_sqmi", "jurisdiction", "state",
-        "centers_details", "centers_analyzed"
+        "centers_details", "centers_analyzed", "data_source_details"
     }
     
     for cat_name, score in scores.items():

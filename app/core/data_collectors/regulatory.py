@@ -90,7 +90,35 @@ class RegulatoryCollector:
                 **licensing_metrics,
                 **timeline_metrics,
                 "data_source": "Google Geocoding API + Estimations - 8 Data Points",
-                "note": "Estimates based on general patterns. Verify with local authorities."
+                "note": "Estimates based on general patterns. Verify with local authorities.",
+                
+                # Data source transparency for business users
+                "data_source_details": {
+                    "overall_type": "estimated",
+                    "accuracy": "low",
+                    "verifiable": False,
+                    "critical_note": "⚠️ Regulatory data is estimated from patterns. ALWAYS verify with local zoning board and licensing authorities before making decisions.",
+                    "metrics": {
+                        "zoning_compliance_score": {"type": "estimated", "source": "Place type analysis", "note": "Verify with local zoning office"},
+                        "conditional_use_permit_required": {"type": "estimated", "source": "Pattern-based assessment"},
+                        "rezoning_feasibility_score": {"type": "estimated", "source": "Nearby zoning analysis"},
+                        "building_code_complexity_score": {"type": "estimated", "source": "State/city size patterns"},
+                        "ada_compliance_cost_estimate": {"type": "estimated", "source": "Industry averages by building type"},
+                        "licensing_difficulty_score": {"type": "estimated", "source": "State licensing patterns"},
+                        "time_to_obtain_license_days": {"type": "estimated", "source": "State averages"},
+                        "permit_processing_time_days": {"type": "estimated", "source": "City population-based estimate"}
+                    },
+                    "required_verifications": [
+                        {"action": "Zoning Check", "contact": "Local Planning/Zoning Department", "reason": "Confirm childcare is permitted use"},
+                        {"action": "Building Inspection", "contact": "Building Department", "reason": "Assess code requirements"},
+                        {"action": "License Application", "contact": "State Childcare Licensing Board", "reason": "Get actual timeline and requirements"},
+                        {"action": "Fire Safety Inspection", "contact": "Fire Marshal", "reason": "Verify fire code compliance"}
+                    ],
+                    "improvement_recommendations": [
+                        {"metric": "zoning_compliance_score", "integration": "Municipal Open Data Portal", "note": "Varies by city"},
+                        {"metric": "licensing_difficulty_score", "integration": "State Licensing Board API", "note": "Contact state for data access"}
+                    ]
+                }
             }
             
         except Exception as e:

@@ -342,7 +342,34 @@ class DemographicsCollector:
                 # Metadata
                 "total_population": total_population,
                 "land_area_sqmi": round(land_area_sqmi, 2),
-                "data_source": "U.S. Census Bureau ACS 5-Year (2022) - 15 Data Points"
+                "data_source": "U.S. Census Bureau ACS 5-Year (2022) - 15 Data Points",
+                
+                # Data source transparency for business users
+                "data_source_details": {
+                    "overall_type": "real_api",
+                    "api_name": "U.S. Census Bureau ACS 5-Year Estimates",
+                    "api_url": "https://api.census.gov/data/2022/acs/acs5",
+                    "accuracy": "high",
+                    "verifiable": True,
+                    "verification_url": "https://data.census.gov",
+                    "metrics": {
+                        "children_0_5_count": {"type": "real_api", "source": "Census B01001"},
+                        "population_density": {"type": "real_api", "source": "Census B01003/ALAND"},
+                        "birth_rate": {"type": "derived", "source": "Calculated from Census data"},
+                        "age_distribution_pct": {"type": "real_api", "source": "Census B06001"},
+                        "median_household_income": {"type": "real_api", "source": "Census B19013"},
+                        "income_distribution_pct": {"type": "real_api", "source": "Census B19001"},
+                        "avg_childcare_spending_monthly": {"type": "estimated", "source": "10% of median income"},
+                        "income_growth_rate": {"type": "estimated", "source": "Pattern-based projection"},
+                        "dual_income_rate": {"type": "real_api", "source": "Census B23008"},
+                        "working_mothers_rate": {"type": "real_api", "source": "Census B23007"},
+                        "avg_commute_time_minutes": {"type": "real_api", "source": "Census B08303"},
+                        "population_growth_rate": {"type": "estimated", "source": "Density-based projection"},
+                        "net_migration_rate": {"type": "estimated", "source": "Pattern-based projection"},
+                        "family_household_rate": {"type": "real_api", "source": "Census B11001"},
+                        "educational_attainment_pct": {"type": "real_api", "source": "Census B15003"}
+                    }
+                }
             }
             
         except Exception as e:

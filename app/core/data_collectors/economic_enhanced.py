@@ -84,7 +84,32 @@ class EconomicCollectorEnhanced:
                 **labor_metrics,
                 **incentives_metrics,
                 **trends_metrics,
-                "data_source": "Google Places API + Estimations - 10 Data Points"
+                "data_source": "Google Places API + Estimations - 10 Data Points",
+                
+                # Data source transparency for business users
+                "data_source_details": {
+                    "overall_type": "estimated",
+                    "accuracy": "moderate",
+                    "verifiable": False,
+                    "note": "Economic metrics are derived from neighborhood indicators. For production use, integrate real estate and labor APIs.",
+                    "metrics": {
+                        "real_estate_cost_per_sqft": {"type": "estimated", "source": "Google Places (premium amenity density)", "note": "For real data, use Zillow/CoStar API"},
+                        "property_tax_rate_pct": {"type": "estimated", "source": "State average rates"},
+                        "construction_cost_per_sqft": {"type": "estimated", "source": "Based on real estate cost + 40%"},
+                        "avg_commercial_rent_per_sqft_year": {"type": "estimated", "source": "Derived from property costs"},
+                        "utility_cost_index": {"type": "estimated", "source": "State EIA data averages"},
+                        "local_wage_level_annual": {"type": "estimated", "source": "Google Places price levels as proxy"},
+                        "childcare_worker_availability_score": {"type": "proxy", "source": "Schools and centers count"},
+                        "avg_childcare_worker_wage": {"type": "estimated", "source": "BLS baseline + local adjustment", "note": "For real data, use BLS API"},
+                        "business_incentives_score": {"type": "proxy", "source": "Government buildings and development zones"},
+                        "economic_growth_indicator": {"type": "proxy", "source": "New business count from Google Places"}
+                    },
+                    "improvement_recommendations": [
+                        {"metric": "real_estate_cost_per_sqft", "api": "Zillow API or CoStar", "url": "https://www.zillow.com/howto/api/APIOverview.htm"},
+                        {"metric": "avg_childcare_worker_wage", "api": "Bureau of Labor Statistics API", "url": "https://www.bls.gov/developers/"},
+                        {"metric": "local_wage_level_annual", "api": "Census ACS Income Data", "url": "https://api.census.gov"}
+                    ]
+                }
             }
             
         except Exception as e:

@@ -342,7 +342,31 @@ class CompetitionCollectorEnhanced:
             
             # Metadata
             "data_source": "Google Places API - 12 Data Points",
-            "centers_analyzed": centers_count
+            "centers_analyzed": centers_count,
+            
+            # Data source transparency for business users
+            "data_source_details": {
+                "overall_type": "real_api",
+                "api_name": "Google Places API",
+                "api_url": "https://maps.googleapis.com/maps/api/place",
+                "accuracy": "high",
+                "verifiable": True,
+                "verification_url": "https://www.google.com/maps",
+                "metrics": {
+                    "existing_centers_count": {"type": "real_api", "source": "Google Places Nearby Search"},
+                    "total_licensed_capacity": {"type": "estimated", "source": "Derived from review counts (proxy)"},
+                    "market_saturation_index": {"type": "derived", "source": "Centers per square mile"},
+                    "avg_competitor_rating": {"type": "real_api", "source": "Google Places Details"},
+                    "premium_facilities_count": {"type": "real_api", "source": "Filtered from Google ratings"},
+                    "avg_capacity_utilization_pct": {"type": "estimated", "source": "Derived from rating patterns"},
+                    "waitlist_prevalence_score": {"type": "estimated", "source": "Derived from utilization"},
+                    "market_gap_score": {"type": "estimated", "source": "Demand vs capacity calculation"},
+                    "demand_supply_ratio": {"type": "estimated", "source": "Population-based estimate"},
+                    "nearest_competitor_miles": {"type": "real_api", "source": "Haversine from Google coordinates"},
+                    "competitive_intensity_score": {"type": "derived", "source": "Composite of real metrics"},
+                    "new_centers_planned": {"type": "real_api", "source": "Google Places name analysis"}
+                }
+            }
         }
     
     def _haversine_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
