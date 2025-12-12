@@ -14,6 +14,7 @@ New Features:
 - Request deduplication queue
 - Batch analysis endpoint
 - Metrics dashboard
+- OpenAI/ChatGPT AI Explanations
 """
 
 from fastapi import FastAPI, Request, HTTPException
@@ -27,6 +28,16 @@ from typing import Dict, Any, List, Optional
 import asyncio
 from datetime import datetime
 import time
+import json
+import os
+
+# OpenAI Integration
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    print("⚠️ OpenAI package not installed. Run: pip install openai")
 
 # Import collectors
 from app.core.data_collectors.demographics import DemographicsCollector
@@ -47,6 +58,96 @@ import googlemaps
 from redis_cache import get_redis_cache
 from database import get_database
 from circuit_breaker import get_circuit_breaker, get_all_breakers_status, CircuitOpenError
+
+# Initialize OpenAI client
+openai_client = None
+settings = get_settings()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "") or getattr(settings, 'openai_api_key', None) or ""
+
+if OPENAI_AVAILABLE and OPENAI_API_KEY:
+    try:
+        openai_client = OpenAI(api_key=OPENAI_API_KEY)
+        print("✅ OpenAI/ChatGPT API initialized successfully")
+    except Exception as e:
+        print(f"⚠️ OpenAI initialization failed: {e}")
+else:
+    if not OPENAI_AVAILABLE:
+        print("⚠️ OpenAI package not available")
+    elif not OPENAI_API_KEY:
+        print("⚠️ OPENAI_API_KEY not set. AI explanations will use rule-based system.")
+
+
+async def generate_ai_explanation_openai(category: str, data: Dict[str, Any], score: float) -> Dict[str, str]:
+    """Generate AI-powered explanation using OpenAI/ChatGPT API"""
+    if not openai_client:
+        # Fallback to rule-based explanation
+        return {
+            "interpretation": f"Score of {score:.1f}/100 indicates {'excellent' if score >= 75 else 'good' if score >= 60 else 'fair' if score >= 45 else 'needs attention'} potential for {category}.",
+            "recommendation": "Review detailed metrics for specific insights.",
+            "ai_source": "rule-based"
+        }
+    
+    try:
+        # Filter to only scalar values for the prompt
+        filtered_data = {k: v for k, v in data.items() 
+                        if isinstance(v, (int, float, str, bool)) 
+                        and not k.endswith('_explanation')
+                        and k not in ['success', 'address', 'coordinates', 'data_source', 'data_source_details']}
+        
+        # Create prompt for ChatGPT
+        prompt = f"""You are an expert childcare business location analyst. Analyze this {category} data for a potential childcare center location.
+
+Category: {category.upper()}
+Overall Score: {score:.1f}/100
+Key Metrics:
+{json.dumps(filtered_data, indent=2)[:1500]}
+
+Provide a brief, actionable analysis in JSON format with these fields:
+1. "interpretation": 2-3 sentences explaining what this score means for opening a childcare business here. Be specific about the data.
+2. "recommendation": 1-2 specific, actionable recommendations based on the data.
+3. "key_insight": One key takeaway for a business owner.
+
+Return ONLY valid JSON, no markdown or extra text."""
+
+        response = openai_client.chat.completions.create(
+            model="gpt-4o-mini",  # Cost-effective and fast
+            messages=[
+                {"role": "system", "content": "You are a childcare business location expert. Provide concise, actionable insights. Always respond with valid JSON only."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=400,
+            temperature=0.7
+        )
+        
+        result_text = response.choices[0].message.content.strip()
+        
+        # Try to parse JSON
+        try:
+            # Remove markdown code blocks if present
+            if result_text.startswith("```"):
+                result_text = result_text.split("```")[1]
+                if result_text.startswith("json"):
+                    result_text = result_text[4:]
+            result = json.loads(result_text)
+            result["ai_source"] = "openai"
+            return result
+        except json.JSONDecodeError:
+            # If JSON parsing fails, use the raw text
+            return {
+                "interpretation": result_text[:300],
+                "recommendation": "Review metrics for detailed analysis.",
+                "ai_source": "openai-text"
+            }
+            
+    except Exception as e:
+        print(f"OpenAI API error for {category}: {e}")
+        return {
+            "interpretation": f"Score of {score:.1f}/100 suggests {'favorable' if score >= 60 else 'moderate'} conditions for {category}.",
+            "recommendation": "Analyze individual metrics for detailed insights.",
+            "ai_source": "fallback",
+            "error": str(e)
+        }
+
 
 app = FastAPI(title="Brightspot Locator AI - Enterprise v3.0")
 settings = get_settings()
@@ -401,12 +502,22 @@ async def collect_data_parallel(
                 categories[cat_name]["metrics_count"] = 0
             
             # Generate AI explanation for this category
+            # Use OpenAI if available, otherwise fall back to rule-based
             try:
-                explanation = DataPointExplainer.generate_category_explanation(
-                    category=cat_name,
-                    data_points=categories[cat_name],
-                    score=score
-                )
+                if openai_client:
+                    # Use ChatGPT for dynamic AI explanations
+                    explanation = await generate_ai_explanation_openai(
+                        category=cat_name,
+                        data=categories[cat_name],
+                        score=score
+                    )
+                else:
+                    # Fall back to rule-based explanations
+                    explanation = DataPointExplainer.generate_category_explanation(
+                        category=cat_name,
+                        data_points=categories[cat_name],
+                        score=score
+                    )
                 categories[cat_name]["explanation"] = explanation
             except Exception as e:
                 print(f"Warning: Could not generate explanation for {cat_name}: {e}")
