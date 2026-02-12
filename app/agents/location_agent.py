@@ -7,16 +7,23 @@ import asyncio
 from typing import List, Dict, Any, Optional, Annotated
 from loguru import logger
 
+# Try to import agent framework
+AGENT_FRAMEWORK_AVAILABLE = False
 try:
     from agent_framework import ChatAgent, Thread
     from agent_framework.openai import OpenAIChatClient
     from openai import AsyncOpenAI
+    AGENT_FRAMEWORK_AVAILABLE = True
 except ImportError:
     logger.error(
         "agent-framework-azure-ai not installed. "
         "Run: pip install agent-framework-azure-ai --pre"
     )
-    raise
+    # Create stub classes to prevent NameError
+    ChatAgent = None
+    Thread = None
+    OpenAIChatClient = None
+    AsyncOpenAI = None
 
 from app.config import get_settings
 from app.core.data_collectors.demographics import DemographicsCollector
@@ -459,7 +466,15 @@ _agent_instance: Optional[LocationAnalysisAgent] = None
 async def get_agent() -> LocationAnalysisAgent:
     """Get or create singleton agent instance"""
     global _agent_instance
+    
+    if not AGENT_FRAMEWORK_AVAILABLE:
+        raise ImportError(
+            "Agent framework is not available. "
+            "Install with: pip install agent-framework-azure-ai --pre"
+        )
+    
     if _agent_instance is None:
         _agent_instance = LocationAnalysisAgent()
         await _agent_instance.initialize()
     return _agent_instance
+

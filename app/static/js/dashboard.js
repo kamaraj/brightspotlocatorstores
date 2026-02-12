@@ -5,7 +5,7 @@ let currentResults = null;
 let timingChart = null;
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeEventListeners();
     initializeSidebarToggle();
 });
@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeEventListeners() {
     // Form submission
     document.getElementById('analysisForm').addEventListener('submit', handleFormSubmit);
-    
+
     // Sample address buttons
     document.querySelectorAll('.sample-address').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             document.getElementById('address').value = this.dataset.address;
         });
     });
-    
+
     // Export buttons
     document.getElementById('exportJSON')?.addEventListener('click', exportJSON);
     document.getElementById('exportCSV')?.addEventListener('click', exportCSV);
@@ -34,26 +34,26 @@ function initializeSidebarToggle() {
     const closeBtn = document.getElementById('sidebarClose');
     const sidebar = document.getElementById('sidebarPanel');
     const mainContent = document.getElementById('mainContent');
-    
+
     // Create overlay for mobile
     const overlay = document.createElement('div');
     overlay.className = 'sidebar-overlay';
     overlay.id = 'sidebarOverlay';
     document.body.appendChild(overlay);
-    
+
     // Toggle sidebar
     function toggleSidebar() {
         const isMobile = window.innerWidth < 992;
-        
+
         if (isMobile) {
             sidebar.classList.toggle('show');
             overlay.classList.toggle('show');
         } else {
             const isCollapsed = sidebar.classList.contains('collapsed');
-            
+
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('expanded');
-            
+
             // Update button icon and position
             const icon = toggleBtn.querySelector('i');
             if (!isCollapsed) {
@@ -71,11 +71,11 @@ function initializeSidebarToggle() {
             }
         }
     }
-    
+
     // Close sidebar
     function closeSidebar() {
         const isMobile = window.innerWidth < 992;
-        
+
         if (isMobile) {
             sidebar.classList.remove('show');
             overlay.classList.remove('show');
@@ -83,24 +83,24 @@ function initializeSidebarToggle() {
             if (!sidebar.classList.contains('collapsed')) {
                 sidebar.classList.add('collapsed');
                 mainContent.classList.add('expanded');
-                
+
                 const icon = toggleBtn.querySelector('i');
                 icon.className = 'bi bi-chevron-right';
                 toggleBtn.style.left = '20px';
             }
         }
     }
-    
+
     // Event listeners
     toggleBtn.addEventListener('click', toggleSidebar);
     closeBtn.addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
-    
+
     // Handle window resize
     let resizeTimer;
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
+        resizeTimer = setTimeout(function () {
             const isMobile = window.innerWidth < 992;
             if (!isMobile) {
                 overlay.classList.remove('show');
@@ -117,19 +117,19 @@ function initializeSidebarToggle() {
 // Handle form submission
 async function handleFormSubmit(e) {
     e.preventDefault();
-    
+
     const address = document.getElementById('address').value.trim();
     const radius = parseFloat(document.getElementById('radius').value);
-    
+
     if (!address) {
         showError('Please enter an address');
         return;
     }
-    
+
     // Show loading state
     showLoading(true);
     hideError();
-    
+
     try {
         // Call API
         const response = await fetch('/api/v1/analyze', {
@@ -142,20 +142,20 @@ async function handleFormSubmit(e) {
                 radius_miles: radius
             })
         });
-        
+
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
-        
+
         const data = await response.json();
         currentResults = data;
-        
+
         // Display results
         displayResults(data);
-        
+
     } catch (error) {
         console.error('Analysis error:', error);
-        
+
         // Try to extract detailed error message
         let errorMessage = error.message;
         if (error.message.includes('400')) {
@@ -175,7 +175,7 @@ async function handleFormSubmit(e) {
                 // Keep original error message
             }
         }
-        
+
         showError(`Failed to analyze location: ${errorMessage}`);
     } finally {
         showLoading(false);
@@ -184,14 +184,20 @@ async function handleFormSubmit(e) {
 
 // Display analysis results
 function displayResults(data) {
+    // Check for error in response
+    if (data.error) {
+        showError(`Analysis failed: ${data.error}`);
+        // Still show results container with error state
+    }
+
     // Hide welcome message, show results
     document.getElementById('welcomeMessage').classList.add('d-none');
     document.getElementById('resultsContainer').classList.remove('d-none');
-    
+
     // Update overall score
     const overallScore = data.overall_score || 0;
     document.getElementById('overallScore').textContent = overallScore.toFixed(1);
-    
+
     // Show corrected address if different from original
     const addressElement = document.getElementById('analyzedAddress');
     if (data.address_validation && data.address_validation.corrected) {
@@ -202,30 +208,33 @@ function displayResults(data) {
     } else {
         addressElement.textContent = data.address || 'Unknown Location';
     }
-    
-    document.getElementById('analysisTimestamp').querySelector('span').textContent = 
+
+    document.getElementById('analysisTimestamp').querySelector('span').textContent =
         new Date(data.analysis_timestamp || data.timestamp).toLocaleString();
-    
+
     // Update progress bar
     updateProgressBar(overallScore);
-    
+
     // Update recommendation
     updateRecommendation(overallScore, data.recommendation);
-    
+
     // Update performance metrics
     updatePerformanceMetrics(data);
-    
+
     // Update category scores
-    updateCategoryScores(data.categories);
-    
-    // Update detailed tabs with XAI
-    updateDetailedTabs(data.categories);
-    
+    if (data.categories) {
+        updateCategoryScores(data.categories);
+        // Update detailed tabs with XAI
+        updateDetailedTabs(data.categories);
+    } else {
+        console.warn('No category data available in results');
+    }
+
     // Update timing chart - handle both old and new formats
-    const performanceReport = data.performance_report || 
+    const performanceReport = data.performance_report ||
         (data.performance && data.performance.collection_breakdown ? data.performance.collection_breakdown : null);
     updateTimingChart(performanceReport);
-    
+
     // Scroll to results
     document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth' });
 }
@@ -234,11 +243,11 @@ function displayResults(data) {
 function updateProgressBar(score) {
     const progressBar = document.getElementById('overallProgressBar');
     const progressText = document.getElementById('overallProgressText');
-    
+
     progressBar.style.width = `${score}%`;
     progressBar.setAttribute('aria-valuenow', score);
     progressText.textContent = `${score.toFixed(1)}/100`;
-    
+
     // Set color based on score
     progressBar.className = 'progress-bar';
     if (score >= 75) {
@@ -256,11 +265,11 @@ function updateProgressBar(score) {
 function updateRecommendation(score, recommendation) {
     const badge = document.getElementById('recommendationBadge');
     const text = document.getElementById('recommendationText');
-    
+
     let badgeClass = 'badge ';
     let badgeText = '';
     let recommendationText = recommendation || '';
-    
+
     if (score >= 75) {
         badgeClass += 'bg-success';
         badgeText = 'EXCELLENT ⭐⭐⭐⭐⭐';
@@ -274,7 +283,7 @@ function updateRecommendation(score, recommendation) {
         badgeClass += 'bg-danger';
         badgeText = 'POOR ⭐⭐';
     }
-    
+
     badge.className = badgeClass;
     badge.textContent = badgeText;
     text.textContent = recommendationText;
@@ -283,14 +292,14 @@ function updateRecommendation(score, recommendation) {
 // Update performance metrics
 function updatePerformanceMetrics(data) {
     // Handle both old and new field names
-    const totalTimeMs = data.total_analysis_time_ms || 
-                        (data.performance && data.performance.total_time_seconds ? data.performance.total_time_seconds * 1000 : 0);
+    const totalTimeMs = data.total_analysis_time_ms ||
+        (data.performance && data.performance.total_time_seconds ? data.performance.total_time_seconds * 1000 : 0);
     const dataPoints = data.data_points_collected || 66;
-    const successRate = data.performance_report ? 
+    const successRate = data.performance_report ?
         `${data.performance_report.successful_steps}/${data.performance_report.steps_count}` :
-        (data.performance && data.performance.collection_breakdown ? 
+        (data.performance && data.performance.collection_breakdown ?
             `${data.performance.collection_breakdown.successful_steps}/${data.performance.collection_breakdown.steps_count}` : '--');
-    
+
     document.getElementById('totalTime').textContent = totalTimeMs.toFixed(2);
     document.getElementById('dataPoints').textContent = dataPoints;
     document.getElementById('successRate').textContent = successRate;
@@ -300,7 +309,7 @@ function updatePerformanceMetrics(data) {
 function updateCategoryScores(categories) {
     const container = document.getElementById('categoryScores');
     container.innerHTML = '';
-    
+
     const categoryInfo = {
         demographics: { icon: 'bi-people-fill', color: 'primary', name: 'Demographics', points: 15 },
         competition: { icon: 'bi-buildings', color: 'success', name: 'Competition', points: 12 },
@@ -309,14 +318,15 @@ function updateCategoryScores(categories) {
         economic: { icon: 'bi-currency-dollar', color: 'danger', name: 'Economic', points: 10 },
         regulatory: { icon: 'bi-file-text-fill', color: 'secondary', name: 'Regulatory', points: 8 }
     };
-    
+
+    if (!categories) return;
     for (const [key, category] of Object.entries(categories)) {
         const info = categoryInfo[key];
         if (!info) continue;
-        
+
         const score = category.score || 0;
         const collectionTime = category.collection_time_ms || 0;
-        
+
         const card = `
             <div class="col-md-4 mb-3">
                 <div class="card category-score-card score-card ${getScoreClass(score)}">
@@ -341,7 +351,7 @@ function updateCategoryScores(categories) {
                 </div>
             </div>
         `;
-        
+
         container.innerHTML += card;
     }
 }
@@ -364,32 +374,32 @@ function updateDetailedTabs(categories) {
             console.log(`Tab content for ${key} not found`);
             continue;
         }
-        
+
         const categoryName = key.charAt(0).toUpperCase() + key.slice(1);
         const score = category.score || 0;
         const collectionTime = category.collection_time_ms || 0;
         const metricsCount = category.metrics_count || 0;
         console.log(`${key} - metricsCount from backend:`, metricsCount);
-        
+
         // Get data source details for transparency
         const dataSourceDetails = category.data_source_details || {};
         const overallType = dataSourceDetails.overall_type || 'unknown';
         const accuracy = dataSourceDetails.accuracy || 'unknown';
         const metricsSourceInfo = dataSourceDetails.metrics || {};
-        
+
         // Get data point keys (excluding metadata and _explanation keys)
-        const excludeKeys = ['success', 'address', 'coordinates', 'data_source', 'note', 
-                            'jurisdiction', 'state', 'centers_details', 'radius_miles',
-                            'search_radius_miles', 'centers_analyzed', 'total_population', 
-                            'land_area_sqmi', 'score', 'collection_time_ms', 'metrics_count', 
-                            'explanation', 'error', 'metrics', 'data_source_details'];
-        const dataPoints = Object.keys(category).filter(k => 
+        const excludeKeys = ['success', 'address', 'coordinates', 'data_source', 'note',
+            'jurisdiction', 'state', 'centers_details', 'radius_miles',
+            'search_radius_miles', 'centers_analyzed', 'total_population',
+            'land_area_sqmi', 'score', 'collection_time_ms', 'metrics_count',
+            'explanation', 'error', 'metrics', 'data_source_details'];
+        const dataPoints = Object.keys(category).filter(k =>
             !excludeKeys.includes(k) && !k.endsWith('_explanation'));
         console.log(`${key} - dataPoints filtered:`, dataPoints);
-        
+
         // Generate data source badge HTML
         const dataSourceBadge = getDataSourceBadge(overallType, accuracy);
-        
+
         let html = `
             <!-- Category Header -->
             <div class="alert alert-info border-start border-5 mb-4">
@@ -406,7 +416,7 @@ function updateDetailedTabs(categories) {
                             <svg viewBox="0 0 120 120">
                                 <circle cx="60" cy="60" r="54" fill="none" stroke="#e9ecef" stroke-width="8"/>
                                 <circle cx="60" cy="60" r="54" fill="none" stroke="${getScoreColor(score)}" 
-                                        stroke-width="8" stroke-dasharray="${(score/100)*339.292} 339.292" 
+                                        stroke-width="8" stroke-dasharray="${(score / 100) * 339.292} 339.292" 
                                         transform="rotate(-90 60 60)" stroke-linecap="round"/>
                                 <text x="60" y="65" text-anchor="middle" font-size="24" font-weight="bold" fill="${getScoreColor(score)}">
                                     ${score.toFixed(0)}
@@ -433,20 +443,20 @@ function updateDetailedTabs(categories) {
             <!-- Data Points with XAI -->
             <div class="row">
         `;
-        
+
         // Render each data point as a card with XAI
         for (const dataKey of dataPoints) {
             const value = category[dataKey];
             const displayName = dataKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             const displayValue = formatValue(value);
-            
+
             // Get metric-level data source info
             const metricSource = metricsSourceInfo[dataKey] || {};
             const metricType = metricSource.type || 'unknown';
             const metricSourceName = metricSource.source || 'Unknown';
             const metricNote = metricSource.note || '';
             const metricBadge = getMetricSourceBadge(metricType);
-            
+
             // Get XAI explanation from backend response or use frontend fallback
             const backendXai = category[`${dataKey}_explanation`];
             const xai = backendXai && backendXai.explanation ? {
@@ -459,7 +469,7 @@ function updateDetailedTabs(categories) {
                 confidence: backendXai.explanation.confidence || 'MEDIUM',
                 interpretation: backendXai.interpretation || 'See details'
             } : getXAIForDataPoint(key, dataKey, value);
-            
+
             html += `
                 <div class="col-md-6 mb-3">
                     <div class="card h-100 data-point-card">
@@ -521,7 +531,7 @@ function updateDetailedTabs(categories) {
                 </div>
             `;
         }
-        
+
         html += `
             </div>
             
@@ -533,7 +543,7 @@ function updateDetailedTabs(categories) {
                 </div>
             </div>
         `;
-        
+
         tabContent.innerHTML = html;
     }
 }
@@ -542,7 +552,7 @@ function updateDetailedTabs(categories) {
 function toggleXAIView(category) {
     const xaiElements = document.querySelectorAll(`.xai-content-${category}`);
     const toggleText = document.getElementById(`xai-toggle-${category}`);
-    
+
     xaiElements.forEach(el => {
         if (el.style.display === 'none') {
             el.style.display = 'block';
@@ -558,7 +568,7 @@ function toggleXAIView(category) {
 function toggleDataSourceView(category) {
     const dsElements = document.querySelectorAll(`.ds-content-${category}`);
     const toggleText = document.getElementById(`ds-toggle-${category}`);
-    
+
     dsElements.forEach(el => {
         if (el.style.display === 'none') {
             el.style.display = 'block';
@@ -579,19 +589,19 @@ function getDataSourceBadge(type, accuracy) {
         'proxy': { icon: '🔄', label: 'Proxy Data', class: 'bg-info' },
         'unknown': { icon: '❓', label: 'Unknown', class: 'bg-dark' }
     };
-    
+
     const accuracyInfo = {
         'high': { label: 'High Accuracy', class: 'bg-success' },
         'moderate': { label: 'Moderate Accuracy', class: 'bg-warning text-dark' },
         'low': { label: 'Low Accuracy', class: 'bg-danger' },
         'unknown': { label: '', class: '' }
     };
-    
+
     const t = typeInfo[type] || typeInfo['unknown'];
     const a = accuracyInfo[accuracy] || accuracyInfo['unknown'];
-    
+
     return `<span class="badge ${t.class} me-1">${t.icon} ${t.label}</span>` +
-           (a.label ? `<span class="badge ${a.class}">${a.label}</span>` : '');
+        (a.label ? `<span class="badge ${a.class}">${a.label}</span>` : '');
 }
 
 // Get metric-level source badge
@@ -716,7 +726,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value > 100 ? 'EXCELLENT' : value > 50 ? 'GOOD' : value > 20 ? 'FAIR' : 'POOR'
         },
-        
+
         // Competition XAI
         'existing_centers_count': {
             what: 'Number of childcare centers within specified radius',
@@ -758,7 +768,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'MEDIUM',
             interpretation: value > 60 ? 'EXCELLENT' : value > 40 ? 'GOOD' : value > 20 ? 'FAIR' : 'POOR'
         },
-        
+
         // Accessibility XAI
         'transit_score': {
             what: 'Public transit accessibility score (0-100)',
@@ -780,7 +790,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value < 20 ? 'EXCELLENT' : value < 30 ? 'GOOD' : value < 45 ? 'FAIR' : 'POOR'
         },
-        
+
         // Safety XAI
         'crime_rate_index': {
             what: 'Crime risk score (0-100, lower is safer)',
@@ -802,7 +812,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'LOW',
             interpretation: value < 50 ? 'EXCELLENT' : value < 100 ? 'GOOD' : value < 150 ? 'FAIR' : 'POOR'
         },
-        
+
         // Economic XAI
         'real_estate_cost_per_sqft': {
             what: 'Commercial real estate cost in dollars per square foot',
@@ -824,7 +834,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'MEDIUM',
             interpretation: value > 60 ? 'EXCELLENT' : value > 45 ? 'GOOD' : value > 30 ? 'FAIR' : 'POOR'
         },
-        
+
         // Regulatory XAI
         'licensing_complexity_score': {
             what: 'Regulatory burden score (0-100, lower = easier)',
@@ -836,7 +846,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value < 40 ? 'EXCELLENT' : value < 60 ? 'GOOD' : value < 75 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Demographics Metrics
         'age_distribution_pct': {
             what: 'Percentage of population in target age groups (0-5 years)',
@@ -918,7 +928,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value < 10 ? 'EXCELLENT' : value < 15 ? 'GOOD' : value < 20 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Competition Metrics
         'avg_competitor_reviews': {
             what: 'Average number of Google reviews per competitor',
@@ -990,7 +1000,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value < 8 ? 'EXCELLENT' : value < 15 ? 'GOOD' : value < 25 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Accessibility Metrics
         'transit_stations_count': {
             what: 'Number of public transit stations within 1 mile',
@@ -1072,7 +1082,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'HIGH',
             interpretation: value > 70 ? 'EXCELLENT' : value > 55 ? 'GOOD' : value > 40 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Safety Metrics
         'police_stations_nearby': {
             what: 'Number of police stations within 2 miles',
@@ -1154,7 +1164,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'MEDIUM',
             interpretation: value > 75 ? 'EXCELLENT' : value > 60 ? 'GOOD' : value > 45 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Economic Metrics
         'startup_cost_estimate': {
             what: 'Estimated initial investment to open childcare center',
@@ -1236,7 +1246,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             confidence: 'MEDIUM',
             interpretation: value > 15 ? 'EXCELLENT' : value > 10 ? 'GOOD' : value > 5 ? 'FAIR' : 'POOR'
         },
-        
+
         // Additional Regulatory Metrics
         'state_requirements': {
             what: 'Specific state licensing requirements summary',
@@ -1309,7 +1319,7 @@ function getXAIForDataPoint(category, dataKey, value) {
             interpretation: 'NEUTRAL'
         }
     };
-    
+
     // Return XAI or default
     return xaiDatabase[dataKey] || {
         what: `Measurement of ${dataKey.replace(/_/g, ' ')}`,
@@ -1326,18 +1336,36 @@ function getXAIForDataPoint(category, dataKey, value) {
 // Update timing chart
 function updateTimingChart(performanceReport) {
     if (!performanceReport) return;
-    
+
     const ctx = document.getElementById('timingChart').getContext('2d');
-    
+
     // Destroy existing chart
     if (timingChart) {
         timingChart.destroy();
     }
-    
+
+    if (!performanceReport) {
+        if (timingChart) {
+            timingChart.destroy();
+            timingChart = null;
+        }
+        const canvas = document.getElementById('timingChart');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#6c757d';
+            ctx.textAlign = 'center';
+            ctx.fillText('No performance data available', canvas.width / 2, canvas.height / 2);
+        }
+        return;
+    }
+
     const categories = performanceReport.categories || {};
+    const steps = performanceReport.steps || [];
     const labels = Object.keys(categories).map(k => k.charAt(0).toUpperCase() + k.slice(1));
     const data = Object.values(categories).map(c => c.total_ms);
-    
+
     timingChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -1373,7 +1401,7 @@ function updateTimingChart(performanceReport) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return `${context.parsed.y.toFixed(2)} ms`;
                         }
                     }
@@ -1412,7 +1440,7 @@ function formatValue(value) {
 function showLoading(show) {
     const spinner = document.getElementById('loadingSpinner');
     const button = document.getElementById('analyzeBtn');
-    
+
     if (show) {
         spinner.classList.remove('d-none');
         button.disabled = true;
@@ -1428,10 +1456,10 @@ function showLoading(show) {
 function showError(message) {
     const errorAlert = document.getElementById('errorAlert');
     const errorMessage = document.getElementById('errorMessage');
-    
+
     errorMessage.textContent = message;
     errorAlert.classList.remove('d-none');
-    
+
     // Scroll to error
     errorAlert.scrollIntoView({ behavior: 'smooth' });
 }
@@ -1444,12 +1472,12 @@ function hideError() {
 // Export results as JSON
 function exportJSON() {
     if (!currentResults) return;
-    
+
     const dataStr = JSON.stringify(currentResults, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    
+
     const exportFileDefaultName = `location-analysis-${Date.now()}.json`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -1459,9 +1487,9 @@ function exportJSON() {
 // Export results as CSV
 function exportCSV() {
     if (!currentResults) return;
-    
+
     let csv = 'Category,Data Point,Value\n';
-    
+
     for (const [category, data] of Object.entries(currentResults.categories)) {
         const categoryData = data.data || {};
         for (const [key, value] of Object.entries(categoryData)) {
@@ -1470,10 +1498,10 @@ function exportCSV() {
             }
         }
     }
-    
+
     const dataUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
     const exportFileDefaultName = `location-analysis-${Date.now()}.csv`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);

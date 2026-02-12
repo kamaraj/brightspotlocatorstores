@@ -17,11 +17,11 @@ settings = get_settings()
 
 if __name__ == "__main__":
     print(f"""
-    ╔════════════════════════════════════════════════════════════════╗
-    ║  Childcare Location Intelligence System                       ║
-    ║  Version: {settings.app_version}                                         ║
-    ║  Environment: {settings.environment}                                   ║
-    ╚════════════════════════════════════════════════════════════════╝
+    +------------------------------------------------------------------+
+    |  Childcare Location Intelligence System                         |
+    |  Version: {settings.app_version}                                           |
+    |  Environment: {settings.environment}                                     |
+    +------------------------------------------------------------------+
     
     Starting server...
     - Host: {settings.host}:{settings.port}

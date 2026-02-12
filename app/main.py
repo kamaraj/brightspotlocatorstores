@@ -49,14 +49,14 @@ async def lifespan(app: FastAPI):
     Manages startup and shutdown events
     """
     # Startup
-    logger.info("Starting Brightspot Locator AI application...")
+    logger.info("Starting Tile & Flooring Optimizer AI application...")
     logger.info(f"Environment: {settings.environment}")
     logger.info(f"LLM Provider: {settings.get_llm_config()['provider']}")
     
     # Initialize agent (singleton) if available
     if AGENT_AVAILABLE and get_agent:
         try:
-            agent = await get_agent()
+            _ = await get_agent()
             logger.info("Location analysis agent initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize agent: {e}")
@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
-    description="AI-powered childcare center location intelligence and validation system",
+    description="Strategic Location Intelligence System for Tile Dealers & Distributors",
     docs_url="/api/docs" if settings.debug else None,
     redoc_url="/api/redoc" if settings.debug else None,
     lifespan=lifespan
@@ -156,18 +156,6 @@ templates = Jinja2Templates(directory=str(templates_dir))
 # ============================================
 # Health Check Endpoints
 # ============================================
-
-@app.get("/")
-async def root():
-    """Root endpoint - API info"""
-    return {
-        "name": settings.app_name,
-        "version": settings.app_version,
-        "status": "running",
-        "environment": settings.environment,
-        "docs": "/api/docs" if settings.debug else None
-    }
-
 
 @app.get("/health")
 async def health_check():

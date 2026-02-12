@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brightspot Locator AI - Dashboard</title>
-    
+    <title>Tile & Flooring Optimizer AI - Dashboard</title>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <i class="bi bi-geo-alt-fill"></i> Brightspot Locator AI
+                <i class="bi bi-grid-3x3-gap-fill"></i> Tile & Flooring Optimizer AI
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -69,9 +71,9 @@
                                 <label for="address" class="form-label fw-bold">
                                     <i class="bi bi-pin-map"></i> Address
                                 </label>
-                                <input type="text" class="form-control" id="address" 
-                                       placeholder="Enter full address (e.g., 1600 Amphitheatre Parkway, Mountain View, CA)"
-                                       required>
+                                <input type="text" class="form-control" id="address"
+                                    placeholder="Enter full address (e.g., 1600 Amphitheatre Parkway, Mountain View, CA)"
+                                    required>
                                 <small class="form-text text-muted">
                                     Enter the complete street address including city and state
                                 </small>
@@ -83,8 +85,8 @@
                                     <i class="bi bi-arrows-angle-expand"></i> Search Radius
                                 </label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="radius" 
-                                           value="2.0" min="0.5" max="10" step="0.5" required>
+                                    <input type="number" class="form-control" id="radius" value="2.0" min="0.5" max="10"
+                                        step="0.5" required>
                                     <span class="input-group-text">miles</span>
                                 </div>
                                 <small class="form-text text-muted">
@@ -98,16 +100,39 @@
                                     <i class="bi bi-bookmark"></i> Quick Select
                                 </label>
                                 <div class="btn-group-vertical w-100" role="group">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
-                                            data-address="1600 Amphitheatre Parkway, Mountain View, CA 94043">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="Floor & Decor, 1910 Wells Rd, Orange Park, FL 32073">
+                                        <i class="bi bi-geo-alt"></i> Floor & Decor, Orange Park
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="The Tile Shop, 2712 East Fowler Avenue, Tampa, FL 33612">
+                                        <i class="bi bi-geo-alt"></i> The Tile Shop, Tampa
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="Helping Hands family child care LLC, 10424 South Central Ave, Los Angeles, CA 90002">
+                                        <i class="bi bi-geo-alt"></i> Helping Hands, Los Angeles
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="O2B Kids Cottage Grove, 7781 Hardwood Ave S, Cottage Grove, MN 55016">
+                                        <i class="bi bi-geo-alt"></i> O2B Kids, Cottage Grove
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="1600 Amphitheatre Parkway, Mountain View, CA 94043">
                                         <i class="bi bi-geo-alt"></i> Google HQ, Mountain View
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
-                                            data-address="1 Infinite Loop, Cupertino, CA 95014">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="1 Infinite Loop, Cupertino, CA 95014">
                                         <i class="bi bi-geo-alt"></i> Apple Park, Cupertino
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm text-start sample-address" 
-                                            data-address="1 Microsoft Way, Redmond, WA 98052">
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-sm text-start sample-address"
+                                        data-address="1 Microsoft Way, Redmond, WA 98052">
                                         <i class="bi bi-geo-alt"></i> Microsoft, Redmond
                                     </button>
                                 </div>
@@ -148,36 +173,36 @@
             <div class="col-lg-8 main-content" id="mainContent">
                 <!-- Welcome Message (shows before analysis) -->
                 <div id="welcomeMessage" class="text-center py-5">
-                    <i class="bi bi-graph-up-arrow text-primary" style="font-size: 4rem;"></i>
-                    <h2 class="mt-3">Welcome to Brightspot Locator AI</h2>
+                    <i class="bi bi-grid-3x3 text-primary" style="font-size: 4rem;"></i>
+                    <h2 class="mt-3">Welcome to Tile & Flooring Optimizer AI</h2>
                     <p class="lead text-muted">
-                        Enter an address to analyze 66 data points across 6 categories
+                        Find the ideal location for your next tile showroom or distribution center.
                     </p>
                     <div class="row mt-4">
                         <div class="col-md-4">
                             <div class="card border-primary">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
-                                    <h5 class="mt-2">Demographics</h5>
-                                    <p class="text-muted small">15 data points</p>
+                                    <i class="bi bi-houses-fill text-primary" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Homeowners</h5>
+                                    <p class="text-muted small">Housing demographics</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card border-success">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-buildings text-success" style="font-size: 2rem;"></i>
-                                    <h5 class="mt-2">Competition</h5>
-                                    <p class="text-muted small">12 data points</p>
+                                    <i class="bi bi-cart-check text-success" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Market Share</h5>
+                                    <p class="text-muted small">Competitor analysis</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card border-info">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-car-front-fill text-info" style="font-size: 2rem;"></i>
-                                    <h5 class="mt-2">Accessibility</h5>
-                                    <p class="text-muted small">10 data points</p>
+                                    <i class="bi bi-truck text-info" style="font-size: 2rem;"></i>
+                                    <h5 class="mt-2">Logistics</h5>
+                                    <p class="text-muted small">Accessibility & Transit</p>
                                 </div>
                             </div>
                         </div>
@@ -202,8 +227,8 @@
                                 </div>
                             </div>
                             <div class="progress mt-3" style="height: 30px;">
-                                <div class="progress-bar" id="overallProgressBar" role="progressbar" 
-                                     style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" id="overallProgressBar" role="progressbar" style="width: 0%;"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                     <span id="overallProgressText"></span>
                                 </div>
                             </div>
@@ -251,38 +276,38 @@
                         <div class="card-header bg-light">
                             <ul class="nav nav-tabs card-header-tabs" id="resultsTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="demographics-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#demographics" type="button">
-                                        <i class="bi bi-people"></i> Demographics
+                                    <button class="nav-link active" id="demographics-tab" data-bs-toggle="tab"
+                                        data-bs-target="#demographics" type="button">
+                                        <i class="bi bi-houses"></i> Housing & Demographics
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="competition-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#competition" type="button">
-                                        <i class="bi bi-buildings"></i> Competition
+                                    <button class="nav-link" id="competition-tab" data-bs-toggle="tab"
+                                        data-bs-target="#competition" type="button">
+                                        <i class="bi bi-cart"></i> Market Saturation
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="accessibility-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#accessibility" type="button">
-                                        <i class="bi bi-car-front"></i> Accessibility
+                                    <button class="nav-link" id="accessibility-tab" data-bs-toggle="tab"
+                                        data-bs-target="#accessibility" type="button">
+                                        <i class="bi bi-truck"></i> Logistics & Transit
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="safety-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#safety" type="button">
+                                    <button class="nav-link" id="safety-tab" data-bs-toggle="tab"
+                                        data-bs-target="#safety" type="button">
                                         <i class="bi bi-shield-check"></i> Safety
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="economic-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#economic" type="button">
+                                    <button class="nav-link" id="economic-tab" data-bs-toggle="tab"
+                                        data-bs-target="#economic" type="button">
                                         <i class="bi bi-currency-dollar"></i> Economic
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="regulatory-tab" data-bs-toggle="tab" 
-                                            data-bs-target="#regulatory" type="button">
+                                    <button class="nav-link" id="regulatory-tab" data-bs-toggle="tab"
+                                        data-bs-target="#regulatory" type="button">
                                         <i class="bi bi-file-text"></i> Regulatory
                                     </button>
                                 </li>
@@ -354,8 +379,8 @@
     <footer class="bg-light text-center py-3 mt-5">
         <div class="container">
             <p class="text-muted mb-0">
-                Brightspot Locator AI &copy; 2025 | 
-                <a href="/docs" target="_blank">API Documentation</a> | 
+                Tile & Flooring Optimizer AI &copy; 2026 |
+                <a href="/docs" target="_blank">API Documentation</a> |
                 <a href="/redoc" target="_blank">API Reference</a>
             </p>
         </div>
@@ -363,8 +388,9 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom JS with cache bust -->
     <script src="/static/js/dashboard.js?v=20251210-2"></script>
 </body>
+
 </html>

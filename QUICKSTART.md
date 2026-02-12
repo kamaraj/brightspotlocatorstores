@@ -192,18 +192,12 @@ The system supports multiple LLM providers (priority order):
    GITHUB_MODEL_ID=gpt-4.1-mini
    ```
 
-2. **Azure OpenAI**
-   ```
-   AZURE_OPENAI_API_KEY=xxx
-   AZURE_OPENAI_ENDPOINT=https://xxx.openai.azure.com
-   AZURE_OPENAI_DEPLOYMENT=gpt-4
-   ```
 
-3. **OpenAI Direct**
-   ```
-   OPENAI_API_KEY=sk-xxx
-   OPENAI_MODEL=gpt-4o-mini
-   ```
+2. **Google Gemini API**
+    ```
+    GEMINI_API_KEY=your_gemini_api_key_here
+    GEMINI_API_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent
+    ```
 
 ### Performance Tuning
 

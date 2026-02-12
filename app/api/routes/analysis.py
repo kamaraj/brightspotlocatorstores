@@ -9,12 +9,12 @@ from typing import Optional
 import asyncio
 from datetime import datetime
 
-from app.core.data_collectors.demographics import DemographicsCollector
-from app.core.data_collectors.competition_enhanced import CompetitionCollectorEnhanced
-from app.core.data_collectors.accessibility_enhanced import AccessibilityCollectorEnhanced
+from app.core.data_collectors.tiles.demographics import TilesDemographicsCollector
+from app.core.data_collectors.tiles.competition import TilesCompetitionCollector
+from app.core.data_collectors.tiles.accessibility import TilesAccessibilityCollector
 from app.core.data_collectors.safety_enhanced import SafetyCollectorEnhanced
-from app.core.data_collectors.economic_enhanced import EconomicCollectorEnhanced
-from app.core.data_collectors.regulatory import RegulatoryCollector
+from app.core.data_collectors.tiles.economic import TilesEconomicCollector
+from app.core.data_collectors.tiles.regulatory import TilesRegulatoryCollector
 from app.utils.timing_xai import PerformanceTracker
 
 
@@ -76,12 +76,12 @@ async def analyze_location(request: AnalysisRequest):
     try:
         # Initialize collectors
         with tracker.track("initialization"):
-            demographics = DemographicsCollector()
-            competition = CompetitionCollectorEnhanced()
-            accessibility = AccessibilityCollectorEnhanced()
+            demographics = TilesDemographicsCollector()
+            competition = TilesCompetitionCollector()
+            accessibility = TilesAccessibilityCollector()
             safety = SafetyCollectorEnhanced()
-            economic = EconomicCollectorEnhanced()
-            regulatory = RegulatoryCollector()
+            economic = TilesEconomicCollector()
+            regulatory = TilesRegulatoryCollector()
         
         results = {}
         
@@ -122,7 +122,7 @@ async def analyze_location(request: AnalysisRequest):
         # Get performance report
         performance_report = tracker.get_report()
         
-        # Build response
+        # Build response with flattened category structure
         response_data = {
             "address": request.address,
             "timestamp": datetime.now().isoformat(),
@@ -133,54 +133,54 @@ async def analyze_location(request: AnalysisRequest):
             "recommendation": get_recommendation(scores.get("overall", 0)),
             "categories": {
                 "demographics": {
-                    "data": results["demographics"],
+                    **results["demographics"],  # Flatten data directly into category
                     "score": scores.get("demographics", 0),
-                    "data_points": 15,
+                    "metrics_count": 15,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'demographics_total'), 0
                     )
                 },
                 "competition": {
-                    "data": results["competition"],
+                    **results["competition"],  # Flatten data directly into category
                     "score": scores.get("competition", 0),
-                    "data_points": 12,
+                    "metrics_count": 12,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'competition_total'), 0
                     )
                 },
                 "accessibility": {
-                    "data": results["accessibility"],
+                    **results["accessibility"],  # Flatten data directly into category
                     "score": scores.get("accessibility", 0),
-                    "data_points": 10,
+                    "metrics_count": 10,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'accessibility_total'), 0
                     )
                 },
                 "safety": {
-                    "data": results["safety"],
+                    **results["safety"],  # Flatten data directly into category
                     "score": scores.get("safety", 0),
-                    "data_points": 11,
+                    "metrics_count": 11,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'safety_total'), 0
                     )
                 },
                 "economic": {
-                    "data": results["economic"],
+                    **results["economic"],  # Flatten data directly into category
                     "score": scores.get("economic", 0),
-                    "data_points": 10,
+                    "metrics_count": 10,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'economic_total'), 0
                     )
                 },
                 "regulatory": {
-                    "data": results["regulatory"],
+                    **results["regulatory"],  # Flatten data directly into category
                     "score": scores.get("regulatory", 0),
-                    "data_points": 8,
+                    "metrics_count": 8,
                     "collection_time_ms": next(
                         (s['duration_ms'] for s in performance_report['detailed_steps'] 
                          if s['step'] == 'regulatory_total'), 0
@@ -201,36 +201,32 @@ def calculate_scores(results: dict) -> dict:
     
     scores = {}
     
-    # Demographics
+    # Demographics (Tiles focused: Homeownership + Income)
     demo = results.get("demographics", {})
     if demo:
-        demo_score = (
-            min(100, demo.get("population_density", 0) / 10) * 0.2 +
-            min(100, demo.get("median_household_income", 0) / 1000) * 0.2 +
-            min(100, demo.get("dual_income_rate", 0)) * 0.2 +
-            min(100, demo.get("family_household_rate", 0)) * 0.2 +
-            min(100, demo.get("birth_rate", 0) * 5) * 0.2
-        )
+        income_score = min(100, demo.get("median_household_income", 0) / 1200) # 120k = 100
+        home_score = demo.get("homeownership_rate", 0)
+        renov_score = min(100, demo.get("renovation_potential_rate", 0) * 2)
+        demo_score = (income_score * 0.4 + home_score * 0.3 + renov_score * 0.3)
         scores["demographics"] = round(demo_score, 1)
     
-    # Competition
+    # Competition (Tiles focused: Saturation)
     comp = results.get("competition", {})
     if comp:
-        comp_score = (
-            (100 - min(100, comp.get("market_saturation_index", 0) * 20)) * 0.35 +
-            comp.get("market_gap_score", 50) * 0.35 +
-            (100 - min(100, comp.get("competitive_intensity_score", 0))) * 0.3
-        )
+        saturation = comp.get("market_saturation", "LOW")
+        if saturation == "LOW": comp_score = 90.0
+        elif saturation == "MEDIUM": comp_score = 60.0
+        else: comp_score = 30.0
         scores["competition"] = round(comp_score, 1)
     
-    # Accessibility
+    # Accessibility (Tiles focused: Logistics + Access)
     acc = results.get("accessibility", {})
     if acc:
         acc_score = (
-            acc.get("transit_score", 50) * 0.3 +
-            acc.get("morning_rush_score", 50) * 0.3 +
-            acc.get("parking_availability_score", 50) * 0.2 +
-            acc.get("highway_visibility_score", 50) * 0.2
+            acc.get("truck_accessibility_score", 60) * 0.4 +
+            acc.get("loading_dock_feasibility", 50) * 0.3 +
+            acc.get("parking_capacity_index", 50) * 0.15 +
+            acc.get("signage_visibility", 50) * 0.15
         )
         scores["accessibility"] = round(acc_score, 1)
     
@@ -245,25 +241,25 @@ def calculate_scores(results: dict) -> dict:
         )
         scores["safety"] = round(safe_score, 1)
     
-    # Economic
+    # Economic (Tiles focused: Real estate + Installers)
     econ = results.get("economic", {})
     if econ:
         econ_score = (
-            (100 - min(100, econ.get("real_estate_cost_per_sqft", 150) / 4)) * 0.3 +
-            econ.get("childcare_worker_availability_score", 60) * 0.3 +
+            (100 - min(100, econ.get("real_estate_cost_per_sqft", 140) / 3.5)) * 0.3 +
+            econ.get("installer_availability_score", 60) * 0.3 +
             econ.get("business_incentives_score", 50) * 0.2 +
             econ.get("economic_growth_indicator", 55) * 0.2
         )
         scores["economic"] = round(econ_score, 1)
     
-    # Regulatory
+    # Regulatory (Tiles focused: Zoning + Permitting)
     reg = results.get("regulatory", {})
     if reg:
         reg_score = (
             reg.get("zoning_compliance_score", 60) * 0.4 +
             reg.get("rezoning_feasibility_score", 65) * 0.2 +
-            (100 - min(100, reg.get("building_code_complexity_score", 55))) * 0.2 +
-            (100 - min(100, reg.get("licensing_difficulty_score", 55))) * 0.2
+            (100 - min(100, reg.get("building_code_complexity", 50))) * 0.2 +
+            (100 - min(100, reg.get("licensing_difficulty", 50))) * 0.2
         )
         scores["regulatory"] = round(reg_score, 1)
     
@@ -282,7 +278,7 @@ def get_recommendation(score: float) -> str:
     """Get recommendation text based on score"""
     
     if score >= 75:
-        return "Highly recommended location - Excellent market conditions"
+        return "Excellent location for a tiles dealer or distribution center"
     elif score >= 60:
         return "Suitable location with good potential - Minor considerations"
     elif score >= 45:

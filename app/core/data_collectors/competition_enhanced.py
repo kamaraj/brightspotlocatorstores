@@ -95,14 +95,22 @@ class CompetitionCollectorEnhanced:
             url = f"{self.base_url}/geocode/json"
             params = {"address": address, "key": self.google_api_key}
             
+            logger.info(f"Geocoding address: {address}")
+            logger.info(f"Using API key: {self.google_api_key[:20]}...")
+            
             async with httpx.AsyncClient() as client:
                 response = await client.get(url, params=params, timeout=10.0)
                 response.raise_for_status()
                 data = response.json()
             
+            logger.info(f"Geocoding response status: {data.get('status')}")
+            
             if data["status"] == "OK" and data["results"]:
                 location = data["results"][0]["geometry"]["location"]
+                logger.info(f"Geocoding successful: {location}")
                 return location["lat"], location["lng"]
+            else:
+                logger.warning(f"Geocoding failed with status: {data.get('status')}, error: {data.get('error_message', 'No error message')}")
             
             return None
             

@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # ============================================
     # Application Settings
     # ============================================
-    app_name: str = Field(default="Brightspot Locator AI")
+    app_name: str = Field(default="Tile & Flooring Optimizer AI")
     app_version: str = Field(default="1.0.0")
     environment: str = Field(default="development")
     debug: bool = Field(default=False)

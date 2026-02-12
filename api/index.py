@@ -30,12 +30,10 @@ from app.core.data_collectors.regulatory import RegulatoryCollector
 from app.utils.timing_xai import PerformanceTracker, DataPointExplainer
 import googlemaps
 
-# OpenAI integration
-try:
-    from openai import OpenAI
-    OPENAI_AVAILABLE = True
-except ImportError:
-    OPENAI_AVAILABLE = False
+
+# Google Gemini integration
+import requests
+
 
 app = FastAPI(title="Brightspot Locator AI - Vercel Edition")
 
@@ -50,7 +48,10 @@ app.add_middleware(
 
 # Get configuration from environment
 GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY", os.environ.get("PLACES_API_KEY", ""))
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+
+# Gemini API config
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY", "")
 
 # Templates - use path relative to this file
@@ -63,48 +64,40 @@ try:
 except Exception as e:
     print(f"Templates not available: {e}")
 
-# OpenAI client for AI explanations
-openai_client = None
-if OPENAI_AVAILABLE and OPENAI_API_KEY:
-    try:
-        openai_client = OpenAI(api_key=OPENAI_API_KEY)
-    except Exception as e:
-        print(f"OpenAI client initialization failed: {e}")
+
+
 
 
 async def generate_ai_explanation(category: str, data: Dict[str, Any], score: float) -> Dict[str, str]:
-    """Generate AI-powered explanation using OpenAI"""
-    if not openai_client:
+    """Generate AI-powered explanation using Google Gemini API"""
+    if not GEMINI_API_KEY:
         return {
             "interpretation": f"Score of {score:.1f} indicates {'strong' if score >= 70 else 'moderate' if score >= 50 else 'limited'} potential.",
             "recommendation": "Review detailed metrics for specific insights."
         }
-    
     try:
-        # Create prompt for OpenAI
-        prompt = f"""Analyze this {category} data for a childcare location and provide a brief interpretation and recommendation.
-
-Category: {category}
-Score: {score}/100
-Key Metrics: {json.dumps({k: v for k, v in data.items() if isinstance(v, (int, float, str)) and not k.endswith('_explanation')}, indent=2)[:1000]}
-
-Provide a JSON response with:
-1. "interpretation": 2-3 sentences explaining what the score means for childcare business
-2. "recommendation": 1-2 specific actionable recommendations
-
-Return ONLY valid JSON."""
-
-        response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=300,
-            temperature=0.7
-        )
-        
-        result = json.loads(response.choices[0].message.content)
-        return result
+        prompt = f"""Analyze this {category} data for a childcare location and provide a brief interpretation and recommendation.\n\nCategory: {category}\nScore: {score}/100\nKey Metrics: {json.dumps({k: v for k, v in data.items() if isinstance(v, (int, float, str)) and not k.endswith('_explanation')}, indent=2)[:1000]}\n\nProvide a JSON response with:\n1. 'interpretation': 2-3 sentences explaining what the score means for childcare business\n2. 'recommendation': 1-2 specific actionable recommendations\nReturn ONLY valid JSON."""
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}]
+        }
+        url = f"{GEMINI_API_URL}?key={GEMINI_API_KEY}"
+        resp = requests.post(url, headers=headers, json=payload, timeout=15)
+        resp.raise_for_status()
+        gemini_data = resp.json()
+        # Parse Gemini response for JSON
+        import re
+        import json as pyjson
+        text = gemini_data["candidates"][0]["content"]["parts"][0]["text"]
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        if match:
+            return pyjson.loads(match.group(0))
+        return {
+            "interpretation": text.strip(),
+            "recommendation": "See above."
+        }
     except Exception as e:
-        print(f"OpenAI explanation error: {e}")
+        print(f"Gemini explanation error: {e}")
         return {
             "interpretation": f"Score of {score:.1f} suggests {'favorable' if score >= 60 else 'moderate'} conditions for {category}.",
             "recommendation": "Analyze individual metrics for detailed insights."
@@ -208,7 +201,26 @@ async def collect_data_parallel(address: str, radius_miles: float, tracker: Perf
     with tracker.track("address_validation"):
         address_info = await validate_and_correct_address(address)
         if not address_info.get("success"):
-            return {"error": address_info.get("error"), "original_address": address}
+            # Return complete structure with error so frontend doesn't crash
+            error_msg = address_info.get("error", "Address validation failed")
+            return {
+                "error": error_msg,
+                "original_address": address,
+                "address": address,
+                "overall_score": 0,
+                "categories": {
+                    "demographics": {"score": 0, "error": error_msg, "collection_time_ms": 0},
+                    "competition": {"score": 0, "error": error_msg, "collection_time_ms": 0},
+                    "accessibility": {"score": 0, "error": error_msg, "collection_time_ms": 0},
+                    "safety": {"score": 0, "error": error_msg, "collection_time_ms": 0},
+                    "economic": {"score": 0, "error": error_msg, "collection_time_ms": 0},
+                    "regulatory": {"score": 0, "error": error_msg, "collection_time_ms": 0}
+                },
+                "data_points_collected": 0,
+                "address_validation": address_info,
+                "analysis_timestamp": datetime.now().isoformat()
+            }
+
     
     corrected_address = address_info.get("corrected_address", address)
     location = address_info.get("location", {})
@@ -366,7 +378,7 @@ async def analyze_location(request: Request):
         result["performance"] = {
             "total_time_seconds": round(total_time, 2),
             "collection_breakdown": tracker.get_report(),
-            "openai_enabled": openai_client is not None
+            "gemini_enabled": bool(GEMINI_API_KEY)
         }
         
         return JSONResponse(content=result)
@@ -389,7 +401,7 @@ async def health_check():
         "environment": "vercel",
         "features": {
             "google_maps": bool(GOOGLE_MAPS_API_KEY),
-            "openai": bool(OPENAI_API_KEY) and openai_client is not None,
+            "gemini": bool(GEMINI_API_KEY),
             "census": bool(CENSUS_API_KEY)
         }
     }
@@ -400,11 +412,10 @@ async def check_config():
     """Check API configuration"""
     return {
         "google_maps_configured": bool(GOOGLE_MAPS_API_KEY),
-        "openai_configured": bool(OPENAI_API_KEY),
-        "census_configured": bool(CENSUS_API_KEY),
-        "openai_client_ready": openai_client is not None
+        "gemini_configured": bool(GEMINI_API_KEY),
+        "census_configured": bool(CENSUS_API_KEY)
     }
 
 
 # Export for Vercel
-handler = app
+app = app

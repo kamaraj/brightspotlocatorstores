@@ -1,5 +1,5 @@
-# Brightspot Locator AI
-Production-Ready Location Intelligence System
+# Tile & Flooring Optimizer AI
+Production-Ready Location Intelligence System for Tile Dealers & Distributors
 
 ## 📊 Six Core Insight Layers
 

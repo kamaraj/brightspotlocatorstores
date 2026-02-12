@@ -103,3 +103,5 @@ loki_data/
 *.crt
 credentials.json
 service-account.json
+.vercel
+.env*.local

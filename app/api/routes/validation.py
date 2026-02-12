@@ -10,7 +10,15 @@ from typing import Optional
 from loguru import logger
 import asyncio
 
-from app.agents.location_agent import get_agent
+# Make agent import optional
+try:
+    from app.agents.location_agent import get_agent
+    AGENT_AVAILABLE = True
+except ImportError:
+    logger.warning("Agent framework not available for validation routes")
+    AGENT_AVAILABLE = False
+    get_agent = None
+
 from app.config import get_settings
 
 router = APIRouter()

@@ -8,8 +8,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-# Setup templates
-templates_dir = Path(__file__).parent.parent / "templates"
+# Setup templates - navigate from routes -> api -> app -> templates
+templates_dir = Path(__file__).parent.parent.parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
 
 router = APIRouter(tags=["Web UI"])
@@ -28,3 +28,14 @@ async def dashboard(request: Request):
     - Performance metrics
     """
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@router.get("/api-sources", response_class=HTMLResponse)
+async def api_sources(request: Request):
+    """
+    Data Sources documentation page
+    
+    Shows all API data sources used for analysis
+    """
+    return templates.TemplateResponse("api_sources.html", {"request": request})
+

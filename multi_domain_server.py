@@ -19,6 +19,7 @@ class Domain(str, Enum):
     HEALTHCARE = "healthcare"
     FITNESS = "fitness"
     RESTAURANT = "restaurant"
+    TILES_DISTRIBUTION = "tiles_distribution"
 
 
 # Domain Configuration
@@ -74,6 +75,19 @@ DOMAIN_CONFIG = {
             "economic": {"weight": 0.10, "name": "Market Opportunity"},
             "regulatory": {"weight": 0.10, "name": "Education Compliance"}
         }
+    },
+    "tiles_distribution": {
+        "name": "Tile & Flooring Optimizer",
+        "tagline": "Strategic Locations for Tiles Dealers & Distributors",
+        "icon": "🧱",
+        "categories": {
+            "demographics": {"weight": 0.25, "name": "Housing Demographics"},
+            "competition": {"weight": 0.20, "name": "Market Saturation"},
+            "accessibility": {"weight": 0.15, "name": "Logistics & Transit"},
+            "safety": {"weight": 0.20, "name": "Site Safety"},
+            "economic": {"weight": 0.10, "name": "Economic Viability"},
+            "regulatory": {"weight": 0.10, "name": "Zoning & Compliance"}
+        }
     }
 }
 
@@ -93,6 +107,9 @@ class CollectorFactory:
         elif domain == Domain.INSURANCE:
             from app.core.data_collectors.insurance.demographics import InsuranceDemographicsCollector
             return InsuranceDemographicsCollector()
+        elif domain == Domain.TILES_DISTRIBUTION:
+            from app.core.data_collectors.tiles.demographics import TilesDemographicsCollector
+            return TilesDemographicsCollector()
         # Add more domains...
     
     @staticmethod
@@ -103,7 +120,40 @@ class CollectorFactory:
         elif domain == Domain.BANKING:
             from app.core.data_collectors.banking.competition import BankingCompetitionCollector
             return BankingCompetitionCollector()
+        elif domain == Domain.TILES_DISTRIBUTION:
+            from app.core.data_collectors.tiles.competition import TilesCompetitionCollector
+            return TilesCompetitionCollector()
         # Add more domains...
+
+    @staticmethod
+    def get_accessibility_collector(domain: Domain):
+        if domain == Domain.TILES_DISTRIBUTION:
+            from app.core.data_collectors.tiles.accessibility import TilesAccessibilityCollector
+            return TilesAccessibilityCollector()
+        from app.core.data_collectors.accessibility_enhanced import AccessibilityCollectorEnhanced
+        return AccessibilityCollectorEnhanced()
+
+    @staticmethod
+    def get_economic_collector(domain: Domain):
+        if domain == Domain.TILES_DISTRIBUTION:
+            from app.core.data_collectors.tiles.economic import TilesEconomicCollector
+            return TilesEconomicCollector()
+        from app.core.data_collectors.economic_enhanced import EconomicCollectorEnhanced
+        return EconomicCollectorEnhanced()
+
+    @staticmethod
+    def get_regulatory_collector(domain: Domain):
+        if domain == Domain.TILES_DISTRIBUTION:
+            from app.core.data_collectors.tiles.regulatory import TilesRegulatoryCollector
+            return TilesRegulatoryCollector()
+        from app.core.data_collectors.regulatory import RegulatoryCollector
+        return RegulatoryCollector()
+
+    @staticmethod
+    def get_safety_collector(domain: Domain):
+        # Safety is currently shared across domains but can be specialized
+        from app.core.data_collectors.safety_enhanced import SafetyCollectorEnhanced
+        return SafetyCollectorEnhanced()
 
 
 # Domain-specific scoring
@@ -120,6 +170,8 @@ class ScoringEngine:
             return ScoringEngine._score_banking(category, data)
         elif domain == Domain.INSURANCE:
             return ScoringEngine._score_insurance(category, data)
+        elif domain == Domain.TILES_DISTRIBUTION:
+            return ScoringEngine._score_tiles(category, data)
         
         return 50.0  # Default fallback
     
@@ -157,6 +209,45 @@ class ScoringEngine:
                 min(100, data.get("family_household_rate", 0)) * 0.3
             )
         # ... other categories
+        return 50.0
+
+    @staticmethod
+    def _score_tiles(category: str, data: Dict[str, Any]) -> float:
+        """Tiles-specific scoring"""
+        if category == "demographics":
+            income_score = min(100, data.get("median_household_income", 0) / 1200)
+            home_score = data.get("homeownership_rate", 0)
+            renov_score = min(100, data.get("renovation_potential_rate", 0) * 2)
+            return (income_score * 0.4 + home_score * 0.3 + renov_score * 0.3)
+        
+        elif category == "competition":
+            saturation = data.get("market_saturation", "LOW")
+            if saturation == "LOW": return 90.0
+            if saturation == "MEDIUM": return 60.0
+            return 30.0
+            
+        elif category == "accessibility":
+            return (
+                data.get("truck_accessibility_score", 60) * 0.4 +
+                data.get("loading_dock_feasibility", 50) * 0.3 +
+                data.get("parking_capacity_index", 50) * 0.3
+            )
+
+        elif category == "economic":
+            return (
+                (100 - min(100, data.get("real_estate_cost_per_sqft", 140) / 3.5)) * 0.4 +
+                data.get("installer_availability_score", 60) * 0.6
+            )
+            
+        elif category == "safety":
+            return (100 - data.get("crime_rate_index", 30))
+
+        elif category == "regulatory":
+            return (
+                data.get("zoning_compliance_score", 60) * 0.6 +
+                data.get("rezoning_feasibility_score", 65) * 0.4
+            )
+            
         return 50.0
 
 
@@ -209,6 +300,11 @@ async def home(request: Request):
         <div class="domain-card" onclick="location.href='/education/dashboard'">
             <div class="icon">📚</div>
             <h3>Learning Centers</h3>
+        </div>
+        
+        <div class="domain-card" onclick="location.href='/tiles_distribution/dashboard'">
+            <div class="icon">🧱</div>
+            <h3>Tiles Dealers & Distributors</h3>
         </div>
     </body>
     </html>
@@ -292,16 +388,23 @@ async def analyze_location(request: Request):
     # Get domain configuration
     config = DOMAIN_CONFIG[domain]
     
-    # Create domain-specific collectors
-    demographics = CollectorFactory.get_demographics_collector(domain_enum)
-    competition = CollectorFactory.get_competition_collector(domain_enum)
-    # ... other collectors
-    
-    # Collect data (same pattern, different collectors)
+    # Collect data for all configured categories
     results = {}
-    results["demographics"] = await demographics.collect(address, radius_miles=radius)
-    results["competition"] = await competition.collect(address, radius_miles=radius)
-    # ... other categories
+    
+    # Mapping of category keys to factory methods
+    collector_map = {
+        "demographics": CollectorFactory.get_demographics_collector,
+        "competition": CollectorFactory.get_competition_collector,
+        "accessibility": CollectorFactory.get_accessibility_collector,
+        "safety": CollectorFactory.get_safety_collector,
+        "economic": CollectorFactory.get_economic_collector,
+        "regulatory": CollectorFactory.get_regulatory_collector
+    }
+    
+    for category in config["categories"].keys():
+        if category in collector_map:
+            collector = collector_map[category](domain_enum)
+            results[category] = await collector.collect(address, radius_miles=radius)
     
     # Calculate scores using domain-specific logic
     categories = {}
@@ -334,7 +437,8 @@ def get_recommendation(domain: Domain, score: float) -> str:
             Domain.CHILDCARE: "Excellent location for a childcare center",
             Domain.BANKING: "Prime location for a bank branch",
             Domain.INSURANCE: "Ideal location for an insurance agency",
-            Domain.EDUCATION: "Perfect spot for a learning center"
+            Domain.EDUCATION: "Perfect spot for a learning center",
+            Domain.TILES_DISTRIBUTION: "Prime location for a tiles dealer or distribution center"
         }
         return f"⭐⭐⭐⭐⭐ {messages.get(domain, 'Excellent location')}"
     # ... other score ranges
@@ -350,6 +454,7 @@ if __name__ == "__main__":
     print("🏦 Banking: http://127.0.0.1:9025/banking/dashboard")
     print("🛡️ Insurance: http://127.0.0.1:9025/insurance/dashboard")
     print("📚 Education: http://127.0.0.1:9025/education/dashboard")
+    print("🧱 Tiles: http://127.0.0.1:9025/tiles_distribution/dashboard")
     print("="*60)
     
     uvicorn.run(app, host="127.0.0.1", port=9025)

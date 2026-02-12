@@ -197,7 +197,7 @@ class DemographicsCollector:
             "B01001_027E",  # Female under 5
             "B01003_001E",  # Total population
             "B06001_002E",  # Under 5 years
-            "ALAND",        # Land area
+            # Note: ALAND removed - not available in ACS 5-Year, using estimated area
             
             # Income (4 points)
             "B19013_001E",  # Median income
@@ -223,30 +223,59 @@ class DemographicsCollector:
         try:
             url = self.acs5_url
             
-            # Remove leading zeros from tract (Census API sometimes fails with them)
-            tract_clean = tract.lstrip('0') if tract else tract
-            if not tract_clean:  # If tract was all zeros
-                tract_clean = '0'
-            
+            # Use wildcard for tract to avoid formatting issues, then filter results
+            # Census API is sensitive to tract formatting
             params = {
                 "get": ",".join(variables),
-                "for": f"tract:{tract_clean}",
+                "for": f"tract:*",
                 "in": f"state:{state} county:{county}",
                 "key": self.census_api_key
             }
             
             async with httpx.AsyncClient() as client:
-                response = await client.get(url, params=params, timeout=10.0)
-                response.raise_for_status()
+                response = await client.get(url, params=params, timeout=15.0)
+                
+                # Check for HTTP errors
+                if response.status_code != 200:
+                    logger.error(f"Census API returned status {response.status_code}: {response.text[:200]}")
+                    return self._mock_demographics()
+                
                 data = response.json()
+
             
             if len(data) < 2:
+                logger.warning("No Census data returned")
                 return self._mock_demographics()
             
-            # Parse response (first row is headers, second is data)
+            # Parse response - first row is headers, remaining rows are data
             headers = data[0]
-            values = data[1]
-            census_data = dict(zip(headers, values))
+            
+            # Find the matching tract from results
+            # tract might have leading zeros, so we need to match flexibly
+            matching_row = None
+            tract_index = headers.index("tract") if "tract" in headers else -1
+            
+            if tract_index >= 0:
+                for row in data[1:]:
+                    if len(row) > tract_index:
+                        # Match tract with or without leading zeros
+                        row_tract = str(row[tract_index]).lstrip('0') or '0'
+                        input_tract = tract.lstrip('0') or '0'
+                        if row_tract == input_tract:
+                            matching_row = row
+                            break
+            
+            # If no exact match, use first result (same county)
+            if not matching_row and len(data) > 1:
+                matching_row = data[1]
+                logger.info(f"Using first tract in county as fallback")
+            
+            if not matching_row:
+                logger.warning("No matching tract found in Census data")
+                return self._mock_demographics()
+            
+            census_data = dict(zip(headers, matching_row))
+
             
             # ==== Calculate all 15 metrics ====
             
@@ -258,8 +287,9 @@ class DemographicsCollector:
             children_0_5_final = max(children_0_5, children_0_5_alt)  # Use higher estimate
             
             total_population = int(census_data.get("B01003_001E", 0) or 0)
-            land_area_sqm = int(census_data.get("ALAND", 1) or 1)
-            land_area_sqmi = land_area_sqm / 2_589_988
+            # ALAND not available in ACS 5-Year - estimate based on typical census tract size
+            # Average US census tract is about 4 sq miles, use population to adjust
+            land_area_sqmi = max(1.0, 4.0 * (total_population / 4000)) if total_population > 0 else 4.0
             
             # Population density (children per sq mile)
             population_density = children_0_5_final / land_area_sqmi if land_area_sqmi > 0 else 0

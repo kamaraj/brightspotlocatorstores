@@ -1,0 +1,524 @@
+{
+  "demographics": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "radius_miles": 2.0,
+    "children_0_5_count": 16,
+    "population_density": 12.75,
+    "birth_rate": 2.55,
+    "age_distribution_pct": 1.27,
+    "median_household_income": 65625,
+    "income_distribution_pct": 12.19,
+    "avg_childcare_spending_monthly": 546.88,
+    "income_growth_rate": 1.5,
+    "dual_income_rate": 57.14,
+    "working_mothers_rate": 187.5,
+    "avg_commute_time_minutes": 0.9,
+    "population_growth_rate": 1.0,
+    "net_migration_rate": 0.8,
+    "family_household_rate": 12.35,
+    "educational_attainment_pct": 34.34,
+    "total_population": 1255,
+    "land_area_sqmi": 1.25,
+    "data_source": "U.S. Census Bureau ACS 5-Year (2022) - 15 Data Points",
+    "data_source_details": {
+      "overall_type": "real_api",
+      "api_name": "U.S. Census Bureau ACS 5-Year Estimates",
+      "api_url": "https://api.census.gov/data/2022/acs/acs5",
+      "accuracy": "high",
+      "verifiable": true,
+      "verification_url": "https://data.census.gov",
+      "metrics": {
+        "children_0_5_count": {
+          "type": "real_api",
+          "source": "Census B01001"
+        },
+        "population_density": {
+          "type": "real_api",
+          "source": "Census B01003/ALAND"
+        },
+        "birth_rate": {
+          "type": "derived",
+          "source": "Calculated from Census data"
+        },
+        "age_distribution_pct": {
+          "type": "real_api",
+          "source": "Census B06001"
+        },
+        "median_household_income": {
+          "type": "real_api",
+          "source": "Census B19013"
+        },
+        "income_distribution_pct": {
+          "type": "real_api",
+          "source": "Census B19001"
+        },
+        "avg_childcare_spending_monthly": {
+          "type": "estimated",
+          "source": "10% of median income"
+        },
+        "income_growth_rate": {
+          "type": "estimated",
+          "source": "Pattern-based projection"
+        },
+        "dual_income_rate": {
+          "type": "real_api",
+          "source": "Census B23008"
+        },
+        "working_mothers_rate": {
+          "type": "real_api",
+          "source": "Census B23007"
+        },
+        "avg_commute_time_minutes": {
+          "type": "real_api",
+          "source": "Census B08303"
+        },
+        "population_growth_rate": {
+          "type": "estimated",
+          "source": "Density-based projection"
+        },
+        "net_migration_rate": {
+          "type": "estimated",
+          "source": "Pattern-based projection"
+        },
+        "family_household_rate": {
+          "type": "real_api",
+          "source": "Census B11001"
+        },
+        "educational_attainment_pct": {
+          "type": "real_api",
+          "source": "Census B15003"
+        }
+      }
+    }
+  },
+  "competition": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "radius_miles": 2.0,
+    "existing_centers_count": 15,
+    "total_licensed_capacity": 375,
+    "market_saturation_index": 1.19,
+    "avg_competitor_rating": 4.83,
+    "premium_facilities_count": 13,
+    "avg_capacity_utilization_pct": 91.97,
+    "waitlist_prevalence_score": 100,
+    "market_gap_score": 6.25,
+    "demand_supply_ratio": 1.07,
+    "nearest_competitor_miles": 0.79,
+    "competitive_intensity_score": 70.9,
+    "new_centers_planned": 0,
+    "data_source": "Google Places API - 12 Data Points",
+    "centers_analyzed": 15,
+    "data_source_details": {
+      "overall_type": "real_api",
+      "api_name": "Google Places API",
+      "api_url": "https://maps.googleapis.com/maps/api/place",
+      "accuracy": "high",
+      "verifiable": true,
+      "verification_url": "https://www.google.com/maps",
+      "metrics": {
+        "existing_centers_count": {
+          "type": "real_api",
+          "source": "Google Places Nearby Search"
+        },
+        "total_licensed_capacity": {
+          "type": "estimated",
+          "source": "Derived from review counts (proxy)"
+        },
+        "market_saturation_index": {
+          "type": "derived",
+          "source": "Centers per square mile"
+        },
+        "avg_competitor_rating": {
+          "type": "real_api",
+          "source": "Google Places Details"
+        },
+        "premium_facilities_count": {
+          "type": "real_api",
+          "source": "Filtered from Google ratings"
+        },
+        "avg_capacity_utilization_pct": {
+          "type": "estimated",
+          "source": "Derived from rating patterns"
+        },
+        "waitlist_prevalence_score": {
+          "type": "estimated",
+          "source": "Derived from utilization"
+        },
+        "market_gap_score": {
+          "type": "estimated",
+          "source": "Demand vs capacity calculation"
+        },
+        "demand_supply_ratio": {
+          "type": "estimated",
+          "source": "Population-based estimate"
+        },
+        "nearest_competitor_miles": {
+          "type": "real_api",
+          "source": "Haversine from Google coordinates"
+        },
+        "competitive_intensity_score": {
+          "type": "derived",
+          "source": "Composite of real metrics"
+        },
+        "new_centers_planned": {
+          "type": "real_api",
+          "source": "Google Places name analysis"
+        }
+      }
+    }
+  },
+  "accessibility": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "avg_commute_minutes": 12.9,
+    "peak_congestion_factor": 1.21,
+    "nearest_employer_miles": 0.94,
+    "employers_within_5_miles": 8,
+    "transit_score": 96.9,
+    "walk_score_to_transit": 88.6,
+    "morning_rush_score": 91.5,
+    "evening_rush_score": 82.4,
+    "highway_visibility_score": 30.0,
+    "parking_availability_score": 50.0,
+    "data_source": "Google Maps Platform - 10 Data Points",
+    "data_source_details": {
+      "overall_type": "real_api",
+      "api_name": "Google Maps Platform",
+      "accuracy": "high",
+      "verifiable": true,
+      "verification_url": "https://www.google.com/maps",
+      "metrics": {
+        "avg_commute_minutes": {
+          "type": "real_api",
+          "source": "Google Distance Matrix API"
+        },
+        "peak_congestion_factor": {
+          "type": "real_api",
+          "source": "Google Distance Matrix with departure_time"
+        },
+        "nearest_employer_miles": {
+          "type": "real_api",
+          "source": "Google Places Nearby Search"
+        },
+        "employers_within_5mi": {
+          "type": "real_api",
+          "source": "Google Places Nearby Search"
+        },
+        "transit_score": {
+          "type": "derived",
+          "source": "Transit station count from Google Places"
+        },
+        "walk_to_transit_minutes": {
+          "type": "real_api",
+          "source": "Google Distance Matrix (walking mode)"
+        },
+        "morning_rush_score": {
+          "type": "real_api",
+          "source": "Google Distance Matrix (8 AM departure)"
+        },
+        "evening_rush_score": {
+          "type": "real_api",
+          "source": "Google Distance Matrix (5 PM departure)"
+        },
+        "highway_access_score": {
+          "type": "derived",
+          "source": "Google Directions road types"
+        },
+        "parking_availability_score": {
+          "type": "proxy",
+          "source": "Google Places parking search"
+        }
+      }
+    }
+  },
+  "safety": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "crime_rate_index": 0.0,
+    "violent_crime_rate": 0,
+    "property_crime_rate": 0,
+    "crime_data_source": "FBI Crime Data Explorer API",
+    "crime_data_year": 2022,
+    "traffic_accident_rate": 15,
+    "pedestrian_safety_score": 75,
+    "air_quality_index": 56,
+    "superfund_proximity_score": 70,
+    "industrial_hazards_score": 45,
+    "environmental_data_source": "Google Places proxy",
+    "flood_risk_score": 100,
+    "natural_hazard_composite": 50.0,
+    "neighborhood_safety_perception": 86.6,
+    "data_source": "FBI Crime Data + EPA APIs + Google Maps - 11 Data Points",
+    "data_source_details": {
+      "overall_type": "real_api",
+      "accuracy": "high",
+      "verifiable": true,
+      "metrics": {
+        "crime_rate_index": {
+          "type": "real_api",
+          "source": "FBI Crime Data Explorer API",
+          "api_url": "https://crime-data-explorer.fr.cloud.gov/pages/docApi"
+        },
+        "violent_crime_rate": {
+          "type": "real_api",
+          "source": "FBI Crime Data Explorer API"
+        },
+        "property_crime_rate": {
+          "type": "real_api",
+          "source": "FBI Crime Data Explorer API"
+        },
+        "traffic_accident_rate": {
+          "type": "proxy",
+          "source": "Google Directions (road types)"
+        },
+        "pedestrian_safety_score": {
+          "type": "derived",
+          "source": "Inverse of highway density"
+        },
+        "air_quality_index": {
+          "type": "proxy",
+          "source": "Google Places proxy",
+          "api_url": "https://docs.airnowapi.org/"
+        },
+        "superfund_proximity_score": {
+          "type": "proxy",
+          "source": "Google Places proxy",
+          "api_url": "https://www.epa.gov/enviro/envirofacts-data-service-api"
+        },
+        "industrial_hazards_score": {
+          "type": "proxy",
+          "source": "Google Places proxy",
+          "api_url": "https://www.epa.gov/toxics-release-inventory-tri-program"
+        },
+        "flood_risk_score": {
+          "type": "proxy",
+          "source": "Google Elevation API + water bodies"
+        },
+        "natural_hazard_composite": {
+          "type": "estimated",
+          "source": "Regional baseline + fire station density"
+        },
+        "neighborhood_safety_perception": {
+          "type": "proxy",
+          "source": "Google Places average ratings"
+        }
+      },
+      "apis_integrated": {
+        "fbi_crime_data": {
+          "status": "active",
+          "free": true,
+          "url": "https://crime-data-explorer.fr.cloud.gov"
+        },
+        "epa_envirofacts": {
+          "status": "active",
+          "free": true,
+          "url": "https://www.epa.gov/enviro"
+        },
+        "epa_airnow": {
+          "status": "needs_key",
+          "free": true,
+          "url": "https://docs.airnowapi.org"
+        }
+      }
+    }
+  },
+  "economic": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "real_estate_cost_per_sqft": 380,
+    "property_tax_rate_pct": 1.8,
+    "construction_cost_per_sqft": 532.0,
+    "avg_commercial_rent_per_sqft_year": 36.0,
+    "utility_cost_index": 103.2,
+    "local_wage_level_annual": 30000.0,
+    "childcare_worker_availability_score": 90,
+    "avg_childcare_worker_wage": 38520,
+    "business_incentives_score": 90,
+    "economic_growth_indicator": 100,
+    "data_source": "Google Places API + Estimations - 10 Data Points",
+    "data_source_details": {
+      "overall_type": "estimated",
+      "accuracy": "moderate",
+      "verifiable": false,
+      "note": "Economic metrics are derived from neighborhood indicators. For production use, integrate real estate and labor APIs.",
+      "metrics": {
+        "real_estate_cost_per_sqft": {
+          "type": "estimated",
+          "source": "Google Places (premium amenity density)",
+          "note": "For real data, use Zillow/CoStar API"
+        },
+        "property_tax_rate_pct": {
+          "type": "estimated",
+          "source": "State average rates"
+        },
+        "construction_cost_per_sqft": {
+          "type": "estimated",
+          "source": "Based on real estate cost + 40%"
+        },
+        "avg_commercial_rent_per_sqft_year": {
+          "type": "estimated",
+          "source": "Derived from property costs"
+        },
+        "utility_cost_index": {
+          "type": "estimated",
+          "source": "State EIA data averages"
+        },
+        "local_wage_level_annual": {
+          "type": "estimated",
+          "source": "Google Places price levels as proxy"
+        },
+        "childcare_worker_availability_score": {
+          "type": "proxy",
+          "source": "Schools and centers count"
+        },
+        "avg_childcare_worker_wage": {
+          "type": "estimated",
+          "source": "BLS baseline + local adjustment",
+          "note": "For real data, use BLS API"
+        },
+        "business_incentives_score": {
+          "type": "proxy",
+          "source": "Government buildings and development zones"
+        },
+        "economic_growth_indicator": {
+          "type": "proxy",
+          "source": "New business count from Google Places"
+        }
+      },
+      "improvement_recommendations": [
+        {
+          "metric": "real_estate_cost_per_sqft",
+          "api": "Zillow API or CoStar",
+          "url": "https://www.zillow.com/howto/api/APIOverview.htm"
+        },
+        {
+          "metric": "avg_childcare_worker_wage",
+          "api": "Bureau of Labor Statistics API",
+          "url": "https://www.bls.gov/developers/"
+        },
+        {
+          "metric": "local_wage_level_annual",
+          "api": "Census ACS Income Data",
+          "url": "https://api.census.gov"
+        }
+      ]
+    }
+  },
+  "regulatory": {
+    "success": true,
+    "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+    "coordinates": {
+      "lat": 37.4225087,
+      "lng": -122.0855442
+    },
+    "jurisdiction": "Mountain View",
+    "state": "California",
+    "zoning_compliance_score": 75,
+    "conditional_use_permit_required": false,
+    "rezoning_feasibility_score": 90,
+    "building_code_complexity_score": 75,
+    "ada_compliance_cost_estimate": 25000,
+    "licensing_difficulty_score": 80,
+    "time_to_obtain_license_days": 180,
+    "avg_permit_processing_days": 120,
+    "data_source": "Google Geocoding API + Estimations - 8 Data Points",
+    "note": "Estimates based on general patterns. Verify with local authorities.",
+    "data_source_details": {
+      "overall_type": "estimated",
+      "accuracy": "low",
+      "verifiable": false,
+      "critical_note": "\u26a0\ufe0f Regulatory data is estimated from patterns. ALWAYS verify with local zoning board and licensing authorities before making decisions.",
+      "metrics": {
+        "zoning_compliance_score": {
+          "type": "estimated",
+          "source": "Place type analysis",
+          "note": "Verify with local zoning office"
+        },
+        "conditional_use_permit_required": {
+          "type": "estimated",
+          "source": "Pattern-based assessment"
+        },
+        "rezoning_feasibility_score": {
+          "type": "estimated",
+          "source": "Nearby zoning analysis"
+        },
+        "building_code_complexity_score": {
+          "type": "estimated",
+          "source": "State/city size patterns"
+        },
+        "ada_compliance_cost_estimate": {
+          "type": "estimated",
+          "source": "Industry averages by building type"
+        },
+        "licensing_difficulty_score": {
+          "type": "estimated",
+          "source": "State licensing patterns"
+        },
+        "time_to_obtain_license_days": {
+          "type": "estimated",
+          "source": "State averages"
+        },
+        "permit_processing_time_days": {
+          "type": "estimated",
+          "source": "City population-based estimate"
+        }
+      },
+      "required_verifications": [
+        {
+          "action": "Zoning Check",
+          "contact": "Local Planning/Zoning Department",
+          "reason": "Confirm childcare is permitted use"
+        },
+        {
+          "action": "Building Inspection",
+          "contact": "Building Department",
+          "reason": "Assess code requirements"
+        },
+        {
+          "action": "License Application",
+          "contact": "State Childcare Licensing Board",
+          "reason": "Get actual timeline and requirements"
+        },
+        {
+          "action": "Fire Safety Inspection",
+          "contact": "Fire Marshal",
+          "reason": "Verify fire code compliance"
+        }
+      ],
+      "improvement_recommendations": [
+        {
+          "metric": "zoning_compliance_score",
+          "integration": "Municipal Open Data Portal",
+          "note": "Varies by city"
+        },
+        {
+          "metric": "licensing_difficulty_score",
+          "integration": "State Licensing Board API",
+          "note": "Contact state for data access"
+        }
+      ]
+    }
+  }
+}
